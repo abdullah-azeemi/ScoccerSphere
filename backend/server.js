@@ -116,9 +116,9 @@ const authenticate = (req, res, next) => {
 
 
 // defining routes for creating a New player
-app.post('/players', (req, res) => {
+app.post('/player', (req, res) => {
     const { name, position } = req.body; // Remove goals and assists
-    const sql = 'INSERT INTO players (name, position) VALUES (?, ?)'; // Remove goals and assists
+    const sql = 'INSERT INTO player (name, position) VALUES (?, ?)'; // Remove goals and assists
     db.query(sql, [name, position], (err, result) => {
       if (err) {
         console.log(err);
@@ -130,8 +130,8 @@ app.post('/players', (req, res) => {
   });
   
 // fetch all players
-app.get('/players', (req, res) => {
-    const sql = 'SELECT * FROM players';
+app.get('/player', (req, res) => {
+    const sql = 'SELECT * FROM player';
     db.query(sql, (err, result) => {
       if (err) {
         console.log(err);
@@ -143,9 +143,9 @@ app.get('/players', (req, res) => {
   });
 
 // fetcg players specificllay by id
-app.get('/players/:id', (req, res) => {
+app.get('/player/:id', (req, res) => {
     const playerId = req.params.id;
-    const sql = 'SELECT * FROM players WHERE id = ?';
+    const sql = 'SELECT * FROM player WHERE id = ?';
     db.query(sql, playerId, (err, result) => {
       if (err) {
         console.log(err);
@@ -162,7 +162,7 @@ app.get('/players/:id', (req, res) => {
 app.put('/players/:id', (req, res) => {
     const playerId = req.params.id;
     const { name, position, goals, assists } = req.body;
-    const sql = 'UPDATE players SET name = ?, position = ?, goals = ?, assists = ? WHERE id = ?';
+    const sql = 'UPDATE player SET name = ?, position = ?, goals = ?, assists = ? WHERE id = ?';
     db.query(sql, [name, position, goals, assists, playerId], (err, result) => {
       if (err) {
         console.log(err);
@@ -178,7 +178,7 @@ app.put('/players/:id', (req, res) => {
 // Deletinga player
 app.delete('/players/:id', (req, res) => {
     const playerId = req.params.id;
-    const sql = 'DELETE FROM players WHERE id = ?';
+    const sql = 'DELETE FROM player WHERE id = ?';
     db.query(sql, playerId, (err, result) => {
       if (err) {
         console.log(err);

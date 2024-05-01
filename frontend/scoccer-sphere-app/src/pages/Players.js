@@ -10,7 +10,7 @@ const Players = () => {
 
   const fetchPlayers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/players'); // Update URL to backend port 5000
+      const response = await fetch('http://localhost:5000/player'); // Update URL to backend port 5000
       if (!response.ok) {
         throw new Error('Failed to fetch players');
       }

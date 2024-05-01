@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "pandas": "^0.0.3",
+    "sqlite3": "^5.1.7",
+    "xlsx": "^0.18.5"
+  }
+}
