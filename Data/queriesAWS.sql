@@ -1,17 +1,3 @@
-initilaize repo
-npm init -y
-
-npm install express monggose body-parser cors dotenv
-npm install express mysql dotenv
-
-to run backend 
-node server.js
-
-mysql -u username -p database_name
-
-
-
-// creating the tables :
 CREATE TABLE IF NOT EXISTS player (
     player_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255),
@@ -35,6 +21,7 @@ CREATE TABLE IF NOT EXISTS match_data (
     team_id INT
 );
 
+
 CREATE TABLE IF NOT EXISTS team (
     team_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(60),
@@ -47,24 +34,23 @@ CREATE TABLE IF NOT EXISTS team (
     points INT
 );
 
+
 CREATE TABLE IF NOT EXISTS leagues (
-    league_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255),
-    position INT,
-    team_name VARCHAR(255),
-    draws INT,
-    matches_played INT,
-    wins INT,
-    goalsFor INT,
-    goalsAgainst INT,
-    points INT,
-    team_id INT,
-    FOREIGN KEY (team_id) REFERENCES team(team_id)
+         league_id INT PRIMARY KEY AUTO_INCREMENT,
+         name VARCHAR(255),
+         matches_played INT
      );
+
+
 
 ALTER TABLE player
 ADD FOREIGN KEY (team_id) REFERENCES team(team_id);
 
+
+
+
+
+/// 
 ALTER TABLE match_data
 ADD COLUMN homeTeam_id INT,
 ADD COLUMN awayTeam_id INT,
@@ -74,3 +60,4 @@ ADD FOREIGN KEY (awayTeam_id) REFERENCES team(team_id);
 ALTER TABLE team
 ADD COLUMN league_id INT,
 ADD FOREIGN KEY (league_id) REFERENCES leagues(league_id);
+

@@ -1,3 +1,19 @@
 {
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "football-statistics.cpc806e8o12h.us-east-1.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "FootballData",
+            "password": "Asy622$$",
+            "database": "Scoccer_Stats",
+            "username": "admin"
+        }
+    ]
 }

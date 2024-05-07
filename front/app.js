@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function fetchTeams() {
-    fetch('http://localhost:3000/api/teams')
+    fetch('http://localhost:5000/top-teams')
     .then(response => response.json())
     .then(teams => displayTeams(teams, 'teamsContainer'))
     .catch(error => console.error('Error fetching teams:', error));
@@ -13,7 +13,7 @@ function fetchTeams() {
 
 function searchTeams() {
     const searchText = document.getElementById('teamSearchBox').value;
-    fetch(`http://localhost:3000/api/teams?name=${searchText}`)
+    fetch(`http://localhost:5000/search-team?name=${searchText}`)
         .then(response => response.json())
         .then(teams => displayTeams(teams, 'teamResults'))
         .catch(error => console.error('Error searching teams:', error));
@@ -27,8 +27,9 @@ function displayTeams(teams, containerId) {
         teamDiv.className = 'team-card';
         teamDiv.innerHTML = `<h2>${team.name}</h2>
                              <p>League: ${team.league}</p>
-                             <p>Wins: ${team.win}</p>
-                             <p>Loses: ${team.loses}</p>`;
+                             <p>Wins: ${team.wins}</p>
+                             <p>Loses: ${team.losses}</p>
+                             <p>Points: ${team.points}</p>`;
         container.appendChild(teamDiv);
     });
 }
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchTopPlayers() {
-    fetch('http://localhost:3000/api/top-players')
+    fetch('http://localhost:5000/top-players')
         .then(response => response.json())
         .then(players => {
             const container = document.getElementById('playersContainer');
@@ -51,8 +52,8 @@ function fetchTopPlayers() {
                 playerDiv.className = 'player-card';
                 playerDiv.innerHTML = `<h2>${player.name}</h2>
                                        <p>Position: ${player.position}</p>
-                                       <p>Team: ${player.team}</p>
-                                       <p>Matches Played: ${player.matchesplayed}</p>`;
+                                       <p>Team: ${player.team_name}</p>
+                                       <p>Matches Played: ${player.matches_played}</p>`;
                 playerDiv.onclick = () => showPlayerDetails(player.player_id);
                 container.appendChild(playerDiv);
             });
@@ -64,7 +65,7 @@ function fetchTopPlayers() {
 }
 
 function showPlayerDetails(playerId) {
-    fetch(`http://localhost:3000/api/player-details/${playerId}`)
+    fetch(`http://localhost:5000/player-details/${playerId}`)
         .then(response => response.json())
         .then(data => {
             const modalBody = document.querySelector('modalBody');
@@ -88,7 +89,7 @@ function showPlayerDetails(playerId) {
 
 function searchPlayers() {
     const searchText = document.getElementById('searchBox').value;
-    fetch(`http://localhost:3000/api/search-players?name=${searchText}`)
+    fetch(`http://localhost:5000/search-player/${searchText}`)
         .then(response => response.json())
         .then(players => {
             const resultsContainer = document.getElementById('searchResults');
@@ -98,8 +99,8 @@ function searchPlayers() {
                 playerDiv.className = 'player-card';
                 playerDiv.innerHTML = `<h2>${player.name}</h2>
                                        <p>Position: ${player.position}</p>
-                                       <p>Team: ${player.team}</p>
-                                       <p>Matches Played: ${player.matchesplayed}</p>`;
+                                       <p>Team: ${player.team_name}</p>
+                                       <p>Matches Played: ${player.matches_played}</p>`;
                 playerDiv.onclick = () => showPlayerDetails(player.player_id);
                 resultsContainer.appendChild(playerDiv);
             });
@@ -110,6 +111,9 @@ function searchPlayers() {
         });
 }
 
+
+
+///  -------------------------------- FORMS ----------------------------------------------------
 //login and sign up page
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -127,3 +131,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.toggleForms = toggleForms; 
 });
+
+
+function searchTeams() {
+    const searchText = document.getElementById('teamSearchBox').value;
+    fetch(`http://localhost:5000/search-team/${searchText}`)
+        .then(response => response.json())
+        .then(teams => {
+            const resultsContainer = document.getElementById('teamResults');
+            resultsContainer.innerHTML = '';
+            teams.forEach(team => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team-card';
+                teamDiv.innerHTML = `<h2>${team.name}</h2>
+                                     <p>League: ${team.league}</p>
+                                     <p>Wins: ${team.wins}</p>
+                                     <p>Points: ${team.points}</p>`;
+                resultsContainer.appendChild(teamDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error searching teams:', error);
+            alert('Failed to search teams.');
+        });
+}

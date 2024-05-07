@@ -65,3 +65,13 @@ ALTER TABLE team
 ADD COLUMN league_id INT,
 ADD FOREIGN KEY (league_id) REFERENCES leagues(league_id);
 
+mysql -u admin -p -h football-statistics.cpc806e8o12h.us-east-1.rds.amazonaws.com
+
+CREATE USER 'jeffrey'@'%' IDENTIFIED BY 'somepassword';
+GRANT SELECT ON [your_database].[some_table] TO 'jeffrey'@'%';
+
+
+push on git : 
+    git add .
+    git commit -m ''
+    git push origin main

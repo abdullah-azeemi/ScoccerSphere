@@ -15,7 +15,7 @@ const outputStream = fs.createWriteStream('playerCommands.txt');
 
 // Initialize team name and team ID
 let prevTeamName = '';
-let currentTeamId = 2;
+let currentTeamId = 0;
 
 // Write the beginning of the SQL insert command to the file
 outputStream.write("INSERT INTO player(name, position, goals, assists, matches_played, team_id, shirt_no) VALUES\n");
