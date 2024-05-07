@@ -131,7 +131,7 @@ app.post('/player', (req, res) => {
   
 // fetch all players
 app.get('/player', (req, res) => {
-    const sql = 'SELECT * FROM player';
+    const sql = 'SELECT p.name,p.position,p.goals,p.assists,p.yellow_cards,p.red_cards,p.matches_played,p.shirt_no, t.name FROM player p inner join team t on t.team_id = p.team_id';
     db.query(sql, (err, result) => {
       if (err) {
         console.log(err);
@@ -157,6 +157,40 @@ app.get('/player/:id', (req, res) => {
       }
     });
   });
+
+  // select player by name
+  app.get('/search-player/:id', (req, res) => {
+    const playerId = req.params.id;
+    const sql = `SELECT p.name, p.position, p.goals, p.assists, p.yellow_cards, p.red_cards, p.matches_played, p.shirt_no, t.name as team_name 
+                 FROM player p 
+                 INNER JOIN team t ON t.team_id = p.team_id 
+                 WHERE p.name LIKE ?`;
+    db.query(sql, [`%${playerId}%`], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        } else if (result.length === 0) {
+            res.status(404).send('Player not found');
+        } else {
+            res.json(result);
+        }
+    });
+});
+
+
+
+// fetching top players
+  app.get('/top-players', (req, res) => {
+    const sqlQuery = 'SELECT p.name,p.position,p.goals,p.assists,p.yellow_cards,p.red_cards,p.matches_played,p.shirt_no, t.name as team_name FROM player p inner join team t on t.team_id = p.team_id ORDER BY goals DESC LIMIT 10';
+    db.query(sqlQuery, (err, result) => {
+        if (err){
+          console.log(err);
+        }else{
+        res.json(result);
+        }
+    });
+})
+
   
 // updatiung players Details by id
 app.put('/players/:id', (req, res) => {
@@ -190,6 +224,74 @@ app.delete('/players/:id', (req, res) => {
       }
     });
   });
+
+// specific player details
+  app.get('/player-details/:playerId', (req, res) => {
+    const playerId = req.params.playerId;
+    const sqlQuery = 'SELECT * FROM players WHERE player_id = ?';
+
+    db.query(sqlQuery, [playerId], (err, results) => {
+        if (err) {
+            console.error('Error fetching player details:', err);
+            res.status(500).send('Error fetching player details');
+            return;
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).send('Player not found');
+        }
+    });
+});
+
+
+
+
+
+// display all teams
+  app.get('/teams', (req, res) => {
+    let sqlQuery = 'SELECT * FROM team';
+    const searchTerm = req.query.name;
+
+    if (searchTerm) {
+        sqlQuery += ' WHERE LOWER(name) LIKE ?';
+        db.query(sqlQuery, [`%${searchTerm.toLowerCase()}%`], (err, result) => {
+            if (err) throw err;
+            res.json(result);
+        });
+    } else {
+        db.query(sqlQuery, (err, result) => {
+            if (err) throw err;
+            res.json(result);
+        });
+    }
+});
+
+app.get('/top-teams', (req, res) => {
+  const sqlQuery = 'SELECT * FROM team ORDER BY points desc Limit 10';
+  db.query(sqlQuery, (err, result) => {
+      if (err){
+        console.log(err);
+      }else{
+      res.json(result);
+      }
+  });
+})
+
+app.get('/search-team/:name', (req, res) => {
+  const teamName = req.params.name;
+  const sql = 'SELECT * FROM team WHERE name LIKE ? Order By points desc limit 10';
+  db.query(sql, [`%${teamName}%`], (err, result) => {
+      if (err) {
+          console.error('Error executing MySQL query: ', err);
+          res.status(500).json({ error: 'Internal Server Error' });
+          return;
+      }
+      res.json(result);
+  });
+});
+
+
   
 // Error handling middleware
 app.use((err, req, res, next) => {
