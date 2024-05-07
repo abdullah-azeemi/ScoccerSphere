@@ -142,7 +142,7 @@ app.get('/player', (req, res) => {
     });
   });
 
-// fetcg players specificllay by id
+// fetch players specificllay by id
 app.get('/player/:id', (req, res) => {
     const playerId = req.params.id;
     const sql = 'SELECT * FROM player WHERE id = ?';
@@ -226,24 +226,23 @@ app.delete('/players/:id', (req, res) => {
   });
 
 // specific player details
-  app.get('/player-details/:playerId', (req, res) => {
-    const playerId = req.params.playerId;
-    const sqlQuery = 'SELECT * FROM players WHERE player_id = ?';
+app.get('/player-details/:playerId', (req, res) => {
+  const playerId = req.params.playerId; 
+  const sqlQuery = 'SELECT * FROM player WHERE player_id = ?';
 
-    db.query(sqlQuery, [playerId], (err, results) => {
-        if (err) {
-            console.error('Error fetching player details:', err);
-            res.status(500).send('Error fetching player details');
-            return;
-        }
-        if (results.length > 0) {
-            res.json(results[0]);
-        } else {
-            res.status(404).send('Player not found');
-        }
-    });
+  db.query(sqlQuery, [playerId], (err, results) => {
+      if (err) {
+          console.error('Error fetching player details:', err);
+          res.status(500).send('Error fetching player details');
+          return;
+      }
+      if (results.length > 0) {
+          res.json(results[0]);
+      } else {
+          res.status(404).send('Player not found');
+      }
+  });
 });
-
 
 
 

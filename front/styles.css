@@ -201,6 +201,61 @@ input[type="text"] {
     margin: 10px;
 }
 
+.modal-backdrop.show {
+  opacity: 0.85;
+}
+
+.modal-dialog {
+  max-width: 800px; 
+  margin: 30px auto; /
+}
+
+.modal-content {
+  background-color: #f8f9fa;
+  border-radius: 8px; 
+  border: 1px solid #dee2e6;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.modal-body {
+  padding: 20px;
+  font-size: 1.2rem; 
+  color: #343a40;
+}
+
+.modal-footer {
+  padding: 12px 20px; 
+  background-color: #f1f1f1;
+  border-top: 1px solid #dee2e6; 
+}
+
+.modal-footer .btn {
+  padding: 8px 24px; 
+  font-size: 1.1rem; 
+  border-radius: 5px; 
+}
+
+.modal-footer .btn-primary {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d; 
+  border-color: #6c757d;
+}
+
+
 
 /*Teams Details*/
 

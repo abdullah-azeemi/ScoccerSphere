@@ -65,27 +65,41 @@ function fetchTopPlayers() {
 }
 
 function showPlayerDetails(playerId) {
+    const modalBody = document.querySelector('#modalBody');
+    modalBody.innerHTML = `
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>`;
+
     fetch(`http://localhost:5000/player-details/${playerId}`)
         .then(response => response.json())
         .then(data => {
-            const modalBody = document.querySelector('modalBody');
             modalBody.innerHTML = `
                 <div class="text-center">
                     <img src="${data.imageUrl}" class="img-fluid rounded-circle mb-2" alt="${data.name}">
                 </div>
                 <h3>${data.name}</h3>
-                <p>Position: ${data.position}</p>
-                <p>Team: ${data.team}</p>
-                <p>Matches Played: ${data.matchesPlayed}</p>
-                <p>Goals: ${data.goals}</p>
-                <p>Assists: ${data.assists}</p>
-            </div>`;
+                <p><strong>Rank:</strong> ${data.rank}</p>
+                <p><strong>Position:</strong> ${data.position}</p>
+                <p><strong>Team:</strong> ${data.team}</p>
+                <p><strong>Matches Played:</strong> ${data.matchesPlayed}</p>
+                <p><strong>Goals:</strong> ${data.goals}</p>
+                <p><strong>Assists:</strong> ${data.assists}</p>
+                <p><strong>Strike Rate:</strong> ${data.strikeRate}%</p>`;
+
+            modalBody.innerHTML += `
+                <div class="progress my-3">
+                    <div class="progress-bar" role="progressbar" style="width: ${data.strikeRate}%" aria-valuenow="${data.strikeRate}" aria-valuemin="0" aria-valuemax="100">${data.strikeRate}%</div>
+                </div>`;
         })
         .catch(error => {
             console.error('Error fetching player details:', error);
-            alert('Failed to fetch player details.');
+            modalBody.innerHTML = `<div class="alert alert-danger" role="alert">Failed to fetch player details.</div>`;
         });
 }
+
 
 function searchPlayers() {
     const searchText = document.getElementById('searchBox').value;
