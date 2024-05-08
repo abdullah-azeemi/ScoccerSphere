@@ -35,7 +35,7 @@ html, body {
     display: flex;
     flex-direction: column;
     color: #ffffff;
-    background: url('img/ronaldo.jpg') no-repeat center center;
+    background: url('img/football.gif') no-repeat center center;
     background-size: cover; 
 }
 
