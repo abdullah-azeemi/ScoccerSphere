@@ -11,9 +11,9 @@
             "port": 3306,
             "driver": "MySQL",
             "name": "FootballData",
-            "password": "Asy622$$",
+            "password": "chachu095",
             "database": "Scoccer_Stats",
-            "username": "admin"
+            "username": "waseem"
         }
     ]
 }

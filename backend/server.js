@@ -159,18 +159,18 @@ app.get('/player/:id', (req, res) => {
   });
 
   // select player by name
-  app.get('/search-player/:id', (req, res) => {
-    const playerId = req.params.id;
+  app.get('/search-player/:name', (req, res) => {
+    const playerId = req.params.name.toLowerCase();
     const sql = `SELECT p.name, p.position, p.goals, p.assists, p.yellow_cards, p.red_cards, p.matches_played, p.shirt_no, t.name as team_name 
                  FROM player p 
                  INNER JOIN team t ON t.team_id = p.team_id 
-                 WHERE p.name LIKE ?`;
+                 WHERE LOWER(p.name) LIKE ?`;
     db.query(sql, [`%${playerId}%`], (err, result) => {
         if (err) {
             console.log(err);
             res.status(500).send('Internal Server Error');
         } else if (result.length === 0) {
-            res.status(404).send('Player not found');
+            res.json([]);
         } else {
             res.json(result);
         }
@@ -278,18 +278,24 @@ app.get('/top-teams', (req, res) => {
 })
 
 app.get('/search-team/:name', (req, res) => {
-  const teamName = req.params.name;
-  const sql = 'SELECT * FROM team WHERE name LIKE ? Order By points desc limit 10';
+  const teamName = req.params.name.toLowerCase();
+  const sql = 'SELECT * FROM team WHERE LOWER(name) LIKE ?';
+
   db.query(sql, [`%${teamName}%`], (err, result) => {
       if (err) {
-          console.error('Error executing MySQL query: ', err);
-          res.status(500).json({ error: 'Internal Server Error' });
-          return;
+          console.error('Error executing MySQL query:', err);
+          return res.status(500).json({ error: 'Internal Server Error' });
       }
-      res.json(result);
+      if (err) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      } else if (result.length === 0) {
+          res.json([]);
+      } else {
+          res.json(result);
+      }
   });
 });
-
 
   
 // Error handling middleware
