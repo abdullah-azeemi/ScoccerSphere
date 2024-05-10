@@ -297,6 +297,49 @@ app.get('/search-team/:name', (req, res) => {
   });
 });
 
+
+
+app.get('/search-team/${teamId}', (req, res) => {
+  const teamName = req.params.name.toLowerCase();
+  const sql = 'SELECT name FROM team WHERE team_id = ?';
+
+  db.query(sql, [`%${teamName}%`], (err, result) => {
+      if (err) {
+          console.error('Error executing MySQL query:', err);
+          return res.status(500).json({ error: 'Internal Server Error' });
+      }
+      if (err) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      } else if (result.length === 0) {
+          res.json([]);
+      } else {
+          res.json(result);
+      }
+  });
+});
+
+// all match details
+app.get('/all-matches-details', (req, res) => {
+  const sql = `SELECT m.match_id, m.date, m.homeGoals, m.awayGoals, m.attendance, m.referee, home_team.name AS homeTeamName, away_team.name AS awayTeamName 
+               FROM match_data AS m 
+               JOIN team AS home_team ON m.homeTeam_id = home_team.team_id 
+               JOIN team AS away_team ON m.awayTeam_id = away_team.team_id 
+               ORDER BY m.match_id, m.date`;
+
+  db.query(sql, (err, result) => {
+      if (err) {
+          console.error('Error executing MySQL query:', err);
+          return res.status(500).json({ error: 'Internal Server Error' });
+      } else if (result.length === 0) {
+          res.json([]);
+      } else {
+          res.json(result);
+      }
+  });
+});
+
+
   
 // Error handling middleware
 app.use((err, req, res, next) => {
