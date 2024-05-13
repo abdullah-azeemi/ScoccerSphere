@@ -18,56 +18,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
-    <title>Soccer Sphere | Players Details</title>
+    <title>Soccer Sphere | Matches</title>
 </head>
 <body>
 
-  <div class="playersBg">
+  <div class="matchesBg">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">Soccer Sphere</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="nav navbar-nav ml-auto">
-          <a class="nav-link" href="index.html">&#x1F3E0; Home</a>
-          <a class="nav-link" href="competition.html">&#x1F3C6; Leagues & Competitions</a>
-          <a class="nav-link" href="matches.html"><span>&#x26BD;</span> Matches</a>
-          <a class="nav-link" href="login_signup.html">&#x1F464; Login & Sign Up</a>
-        </div>
-      </div>
-  </nav>
-
-    <div class="container mt-5">
-        <input type="text" id="searchBox" placeholder="Search Players" class="form-control">
-        <button onclick="searchPlayers()" class="btn btn-primary mt-2">Search</button>
-        <div id="searchResults" class="players-container"></div>
-        <h1>Top 10 Players:</h1>
-        <div id="playersContainer" class="players-container">
-            <!--Players will be added dynamically...!-->
-        </div>
-    </div>
-
-   <!-- Player Details Modal -->
-    <div class="modal fade" id="playerDetailModal" tabindex="-1" role="dialog" aria-labelledby="playerDetailModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="playerDetailModalLabel">Player Details:</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" id="modalBody">
-            <!-- Additional details will be added here -->
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a class="navbar-brand" href="#">Soccer Sphere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="nav navbar-nav ml-auto">
+            <a class="nav-link" href="index.html">&#x1F3E0; Home</a>
+            <a class="nav-link" href="competition.html">&#x1F3C6; Leagues & Competitions</a>
+            <a class="nav-link" href="matches.html"><span>&#x26BD;</span> Matches</a>
+            <a class="nav-link" href="login_signup.html">&#x1F464; Login & Sign Up</a>
           </div>
         </div>
-      </div>
-    </div>
+    </nav>
 
+    
 
     <div class="container-fluid footer">
         <div class="row footer-content">

@@ -12,25 +12,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles.css">
-    <title>Soccor Sphere | Players Details</title>
+    <title>Soccor Sphere | Teams Details</title>
 </head>
 <body>
 
-  <div>
+  <div class="teamsBg">
     <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">Soccor Sphere</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="nav navbar-nav ml-auto">
-            <a class="nav-link" href="index.html">Home</a>
-            <a class="nav-link" href="competition.html">Leagues & Competitions</a>
-            <a class="nav-link" href="#">Matches</a>
-            <a class="nav-link" href="login_signup.html">Login & Sign Up</a>
-          </div>
+      <a class="navbar-brand" href="#">Soccer Sphere</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="nav navbar-nav ml-auto">
+          <a class="nav-link" href="index.html">&#x1F3E0; Home</a>
+          <a class="nav-link" href="competition.html">&#x1F3C6; Leagues & Competitions</a>
+          <a class="nav-link" href="matches.html"><span>&#x26BD;</span> Matches</a>
+          <a class="nav-link" href="login_signup.html">&#x1F464; Login & Sign Up</a>
         </div>
-    </nav>
+      </div>
+  </nav>
 
     <div class="container mt-5">
         <input type="text" id="teamSearchBox" placeholder="Search Teams" class="form-control">
@@ -40,6 +40,26 @@
         <div id="teamsContainer" class="teams-container"> 
             <!--Teams will be added dynamically...!-->
         </div>
+    </div>
+
+    <!-- Teams Details Modal -->
+    <div class="modal fade" id="teamDetailModal" tabindex="-1" role="dialog" aria-labelledby="teamDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="teamDetailModalLabel">Team Details:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modalBody">
+            <!-- Additional details will be added here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
            

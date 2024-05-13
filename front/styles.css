@@ -7,23 +7,33 @@ html, body {
 /*Nav Bar*/
 
 .navbar {
-    color: #fff;
-    background: black;
+  color: #fff;
+  background: black;
 }
 
 .nav-link {
-    /* color: rgb(255 255 255); */
-    color: #fff;
-    font-family: 'Lato', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  border-right: 1px solid #fff; /* Add vertical lines */
+  padding-right: 10px; /* Add some padding between links */
+}
+
+.nav-link:last-child {
+  border-right: none; /* Remove border from the last link */
 }
 
 .navbar-brand {
-    color: rgb(255 255 255);
-    font-family: 'Lato', sans-serif;
-    font-weight: 600;
-    font-size: 1.7rem;
+  color: rgb(255 255 255);
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+}
+
+.teamsBg, .playersBg,.matchesBg {
+  background-image: url('img/bg.jpg');
+  background-size: cover;
 }
 
 /*Home*/
@@ -218,8 +228,9 @@ input[type="text"] {
 }
 
 .modal-header {
-  background-color: #007bff;
+  background-color: black;
   color: white;
+  border-radius: 4px;
 }
 
 .modal-title {
@@ -230,7 +241,7 @@ input[type="text"] {
 .modal-body {
   padding: 20px;
   font-size: 1.2rem; 
-  color: #343a40;
+  color: #0056b3;
 }
 
 .modal-footer {
@@ -246,14 +257,22 @@ input[type="text"] {
 }
 
 .modal-footer .btn-primary {
-  background-color: #0069d9;
-  border-color: #0062cc;
+  background-color: #027cff;
+  border-color: #0066d3;
 }
 
 .modal-footer .btn-secondary {
-  background-color: #6c757d; 
-  border-color: #6c757d;
+  background-color: #0088ff; 
+  border-color: #1a79cb;
 }
+
+
+.modal-footer .btn-secondary:hover {
+  background-color: #1e61aa; 
+  border-color: #064276;
+}
+
+
 
 
 
@@ -291,7 +310,6 @@ input[type="text"] {
     color: #666;
 }
 
-
 /* Login and signup page */
 
 .bg{
@@ -302,10 +320,11 @@ input[type="text"] {
     position: relative;
     max-width: 850px;
     width: 100%;
-    background: #fff;
+    background: #ffffffaf;
     padding: 40px 30px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     perspective: 2700px;
+    border-radius: 10px;
   }
   .container .cover{
     position: absolute;

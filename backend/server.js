@@ -277,24 +277,13 @@ app.get('/top-teams', (req, res) => {
   });
 })
 
-app.get('/search-team/:name', (req, res) => {
-  const teamName = req.params.name.toLowerCase();
-  const sql = 'SELECT * FROM team WHERE LOWER(name) LIKE ?';
-
-  db.query(sql, [`%${teamName}%`], (err, result) => {
-      if (err) {
-          console.error('Error executing MySQL query:', err);
-          return res.status(500).json({ error: 'Internal Server Error' });
-      }
-      if (err) {
-        console.log(err);
-        res.status(500).send('Internal Server Error');
-      } else if (result.length === 0) {
-          res.json([]);
-      } else {
-          res.json(result);
-      }
-  });
+app.get('/search-team', (req, res) => {
+    const searchTerm = req.query.name;
+    sqlQuery = ' SELECT * FROM teams WHERE LOWER(name) LIKE ?';
+    db.query(sqlQuery, [`%${searchTerm.toLowerCase()}%`], (err, result) => {
+        if (err) throw err;
+        res.json(result);
+    });
 });
 
 

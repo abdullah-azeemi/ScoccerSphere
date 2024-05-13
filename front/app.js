@@ -16,7 +16,7 @@ function fetchTeams() {
 
 function searchTeams() {
     const searchText = document.getElementById('teamSearchBox').value;
-    fetch(`http://localhost:5000/search-team?name=${searchText}`)
+    fetch(`http://localhost:5000/search-team/${searchText}`)
         .then(response => {
             if (!response.ok) {
                 if (response.status === 404) {
@@ -50,10 +50,45 @@ function displayTeams(teams, containerId) {
         teamDiv.innerHTML = `<h2>${team.name}</h2>
                              <p>League: ${team.league}</p>
                              <p>Wins: ${team.wins}</p>
-                             <p>Loses: ${team.losses}</p>
-                             <p>Points: ${team.points}</p>`;
+                             <p>Loses: ${team.losses}</p>`;
+        teamDiv.addEventListener('click', () => showTeamDetails(team));
         container.appendChild(teamDiv);
     });
+}
+
+function showTeamDetails(team) {
+    fetch(`https://restcountries.com/v3.1/name/${team.name}`)
+        .then(response => response.json())
+        .then(data => {
+            const countryImage = data[0].flags.png;            
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <img src=${countryImage} alt="Country Image" style="max-width: 200px; margin-right: 20px; border-radius: 10px;">
+                    <div>
+                        <div style="display: flex; align-items: center;">
+                            <h2 style="margin-bottom: 5px;">${team.name}</h2>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="border-right: 1px solid #ccc; padding-right: 10px;">
+                                <p>Wins: ${team.wins}</p>
+                                <p>Loses: ${team.losses}</p>
+                                <p>Draws: ${team.draws}</p>
+                            </div>
+                            <div style="padding-left: 10px;">
+                                <p>Points: ${team.points}</p>
+                                <p>League: ${team.league}</p>
+
+                            </div>
+                        </div>
+                    </div>
+            `;
+            $('#teamDetailModal').modal('show');
+        })
+        .catch(error => {
+            console.error('Error fetching country image:', error);
+            alert('Failed to fetch country image.');
+        });
 }
 
 
@@ -117,10 +152,57 @@ function displayPlayers(players, containerId) {
             <p>Team: ${player.team_name}</p>
             <p>Matches Played: ${player.matches_played}</p>
         `;
-        playerDiv.onclick = () => showPlayerDetails(player.player_id);
+        playerDiv.addEventListener('click', () => showPlayerDetails(player));
         container.appendChild(playerDiv);
     });
 }
+
+function showPlayerDetails(player) {
+    fetch(`https://restcountries.com/v3.1/name/${player.team_name}`)
+        .then(response => response.json())
+        .then(data => {
+            const countryImage = data[0].flags.png;
+            const playerImage = player.image_url;
+
+            const maxRank = 100; 
+            const rankPercentage = (50/ maxRank) * 100;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <img src="${playerImage}" alt="Player Image" style="max-width: 200px; margin-right: 20px; border-radius: 50%;">
+                    <div>
+                        <div style="display: flex; align-items: center;">
+                            <h2 style="margin-bottom: 5px;">${player.name}</h2>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="border-right: 1px solid #ccc; padding-right: 10px;">
+                                <p>Position: ${player.position}</p>
+                                <p>Goals: ${player.goals}</p>
+                                <p>Assists: ${player.assists}</p>
+                            </div>
+                            <div style="padding-left: 10px;">
+                                <p>Matches Played: ${player.matches_played}</p>
+                                <p>Shirt Number: ${player.shirt_no}</p>
+                                <p>Team: ${player.team_name}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <!-- Country Flag -->
+                    <img src="${countryImage}" alt="Country Flag" style="max-width: 200px; border-radius: 10px;">
+                </div>
+            `;
+            $('#playerDetailModal').modal('show');
+        })
+        .catch(error => {
+            console.error('Error fetching country image:', error);
+            alert('Failed to fetch country image.');
+        });
+}
+
+
 
 
 ///  -------------------------------- FORMS ----------------------------------------------------
