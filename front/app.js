@@ -152,6 +152,7 @@ function displayPlayers(players, containerId) {
             <p>Team: ${player.team_name}</p>
             <p>Matches Played: ${player.matches_played}</p>
         `;
+
         playerDiv.addEventListener('click', () => showPlayerDetails(player));
         container.appendChild(playerDiv);
     });
@@ -163,9 +164,10 @@ function showPlayerDetails(player) {
         .then(data => {
             const countryImage = data[0].flags.png;
             const playerImage = player.image_url;
+            var rank = 50; //player.rank
 
-            const maxRank = 100; 
-            const rankPercentage = (50/ maxRank) * 100;
+            var maxRank = 100; 
+            var rankPercentage = (rank/ maxRank) * 100;
 
             const modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = `
@@ -204,7 +206,6 @@ function showPlayerDetails(player) {
 
 
 
-
 ///  -------------------------------- FORMS ----------------------------------------------------
 //login and sign up page
 
@@ -221,3 +222,15 @@ function toggleForms() {
 }
 
 window.toggleForms = toggleForms; 
+
+function nextSection(sectionId) {
+    document.getElementById(sectionId).style.display = "block";
+    document.getElementById("personalDetails").style.display = "none";
+    document.getElementById("footballSkills").style.display = "none";
+}
+
+document.getElementById("signupForm").addEventListener("submit", function(event) {
+    // Handle form submission
+    event.preventDefault();
+    // Get form data and submit
+});

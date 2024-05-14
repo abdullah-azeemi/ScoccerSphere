@@ -69,27 +69,33 @@
                     <!-- Signup Form -->
                     <div class="signup-form">
                         <div class="title">Signup</div>
-                        <form action="#">
-                            <div class="input-boxes">
+                        <form id="signupForm">
+                            <div class="input-section" id="personalDetails">
                                 <div class="input-box">
                                     <i class="fa fa-user"></i>
                                     <input type="text" placeholder="Enter your name" required>
                                 </div>
-                                <div class="input-box">
-                                    <i class="fa fa-envelope"></i>
-                                    <input type="text" placeholder="Enter your email" required>
+                                <!-- Add input boxes for age, gender, country, and picture upload here -->
+                                <div class="button input-box">
+                                    <button type="button" onclick="nextSection('footballSkills')">Next</button>
                                 </div>
-                                <div class="input-box">
-                                    <i class="fa fa-lock"></i>
-                                    <input type="password" placeholder="Enter your password" required>
+                            </div>
+                            <div class="input-section" id="footballSkills" style="display: none;">
+                                <!-- Add input boxes for goals, assists, and position here -->
+                                <div class="button input-box">
+                                    <button type="button" onclick="nextSection('accountDetails')">Next</button>
                                 </div>
+                            </div>
+                            <div class="input-section" id="accountDetails" style="display: none;">
+                                <!-- Add input boxes for email, password, and password confirmation here -->
                                 <div class="button input-box">
                                     <input type="submit" value="Submit">
                                 </div>
-                                <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
                             </div>
                         </form>
+                        <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
                     </div>
+                    
                 </div>
             </div>            
         </div> 
