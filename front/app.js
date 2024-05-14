@@ -55,9 +55,13 @@ function displayTeams(teams, containerId) {
         container.appendChild(teamDiv);
     });
 }
-
 function showTeamDetails(team) {
-    fetch(`https://restcountries.com/v3.1/name/${team.name}`)
+    let searchName = team.name;
+    if (searchName.toLowerCase() === "england") {
+        searchName = "UK";
+    }
+    
+    fetch(`https://restcountries.com/v3.1/name/${searchName}`)
         .then(response => response.json())
         .then(data => {
             const countryImage = data[0].flags.png;            
@@ -159,7 +163,11 @@ function displayPlayers(players, containerId) {
 }
 
 function showPlayerDetails(player) {
-    fetch(`https://restcountries.com/v3.1/name/${player.team_name}`)
+    let searchName = player.team_name;
+        if (searchName.toLowerCase() === "england") {
+            searchName = "UK";
+        }
+    fetch(`https://restcountries.com/v3.1/name/${searchName}`)
         .then(response => response.json())
         .then(data => {
             const countryImage = data[0].flags.png;
