@@ -277,7 +277,7 @@ app.get('/top-teams', (req, res) => {
   });
 })
 
-app.get('/search-team', (req, res) => {
+app.get('/search-team/name', (req, res) => {
     const searchTerm = req.query.name;
     sqlQuery = ' SELECT * FROM teams WHERE LOWER(name) LIKE ?';
     db.query(sqlQuery, [`%${searchTerm.toLowerCase()}%`], (err, result) => {
@@ -286,27 +286,6 @@ app.get('/search-team', (req, res) => {
     });
 });
 
-
-
-app.get('/search-team/${teamId}', (req, res) => {
-  const teamName = req.params.name.toLowerCase();
-  const sql = 'SELECT name FROM team WHERE team_id = ?';
-
-  db.query(sql, [`%${teamName}%`], (err, result) => {
-      if (err) {
-          console.error('Error executing MySQL query:', err);
-          return res.status(500).json({ error: 'Internal Server Error' });
-      }
-      if (err) {
-        console.log(err);
-        res.status(500).send('Internal Server Error');
-      } else if (result.length === 0) {
-          res.json([]);
-      } else {
-          res.json(result);
-      }
-  });
-});
 
 // all match details
 app.get('/all-matches-details', (req, res) => {

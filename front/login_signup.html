@@ -70,29 +70,74 @@
                     <div class="signup-form">
                         <div class="title">Signup</div>
                         <form id="signupForm">
-                            <div class="input-section" id="personalDetails">
+                            <div class="tab">
                                 <div class="input-box">
                                     <i class="fa fa-user"></i>
                                     <input type="text" placeholder="Enter your name" required>
                                 </div>
-                                <!-- Add input boxes for age, gender, country, and picture upload here -->
-                                <div class="button input-box">
-                                    <button type="button" onclick="nextSection('footballSkills')">Next</button>
+                                <div class="input-box">
+                                    <i class="fa fa-calendar"></i>
+                                    <input type="number" placeholder="Enter your age" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-venus-mars"></i>
+                                    <select id="gender" required>
+                                        <option value="">Select gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="Trans">Trans</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-globe"></i>
+                                    <input type="text" placeholder="Enter your country" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-upload"></i>
+                                    <input type="file" id="pictureUpload" accept="img/*" required>
                                 </div>
                             </div>
-                            <div class="input-section" id="footballSkills" style="display: none;">
-                                <!-- Add input boxes for goals, assists, and position here -->
-                                <div class="button input-box">
-                                    <button type="button" onclick="nextSection('accountDetails')">Next</button>
+                            <div class="tab">
+                                <div class="input-box">
+                                    <i class="fa fa-futbol-o"></i>
+                                    <input type="number" placeholder="Enter your goals" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-handshake-o"></i>
+                                    <input type="number" placeholder="Enter your assists" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-futbol-o"></i>
+                                    <input type="text" placeholder="Enter your position" required>
                                 </div>
                             </div>
-                            <div class="input-section" id="accountDetails" style="display: none;">
-                                <!-- Add input boxes for email, password, and password confirmation here -->
-                                <div class="button input-box">
-                                    <input type="submit" value="Submit">
+                            <div class="tab">
+                                <div class="input-box">
+                                    <i class="fa fa-envelope"></i>
+                                    <input type="email" placeholder="Enter your email" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-user"></i>
+                                    <input type="username" placeholder="Enter your username" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" placeholder="Confirm your password" required>
                                 </div>
                             </div>
-                        </form>
+                            <div style="text-align:center;margin-top:40px;">
+                                <span class="step"></span>
+                                <span class="step"></span>
+                                <span class="step"></span>
+                            </div>
+                            <div style="overflow:auto;">
+                                <div style="float:right;">
+                                    <button class="button" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                                    <button class="button" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                </div>
+                            </div>
+                        </form>                
                         <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
                     </div>
                     
