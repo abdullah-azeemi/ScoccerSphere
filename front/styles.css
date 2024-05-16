@@ -530,3 +530,30 @@ input[type="text"] {
   border-radius: 5px;
   
 }
+
+/*Matches Details*/
+
+.selectBar {
+  width: 100%;
+  background-color: #555;
+  overflow: auto;
+  border-radius: 5px;
+}
+
+.selectBar a {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  width: 50%; 
+  text-align: center; 
+}
+
+.selectBar a:hover {
+  background-color: #000;
+}
+
+.selectBar a.active {
+  background-color: #021bba;
+}

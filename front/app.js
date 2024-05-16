@@ -172,7 +172,7 @@ function showPlayerDetails(player) {
         .then(data => {
             const countryImage = data[0].flags.png;
             const playerImage = player.image_url;
-            
+
 
             const modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = `
@@ -289,3 +289,25 @@ document.getElementById("signupForm").addEventListener("submit", function(event)
     event.preventDefault();
     // Get form data and submit
 });
+
+
+//Matches Page 
+
+function toggleDetails(game) {
+    var fifa18Details = document.getElementById('fifa18Details');
+    var fifa20Details = document.getElementById('fifa20Details');
+    var fifa18Link = document.getElementById('fifa18Link');
+    var fifa20Link = document.getElementById('fifa20Link');
+
+    if (game === 'fifa18') {
+        fifa18Details.style.display = 'block';
+        fifa20Details.style.display = 'none';
+        fifa18Link.classList.add('active');
+        fifa20Link.classList.remove('active');
+    } else if (game === 'fifa20') {
+        fifa18Details.style.display = 'none';
+        fifa20Details.style.display = 'block';
+        fifa18Link.classList.remove('active');
+        fifa20Link.classList.add('active');
+    }
+}
