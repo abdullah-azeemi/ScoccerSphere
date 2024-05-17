@@ -304,10 +304,58 @@ function toggleDetails(game) {
         fifa20Details.style.display = 'none';
         fifa18Link.classList.add('active');
         fifa20Link.classList.remove('active');
+        loadMatchDetails('fifa18');
     } else if (game === 'fifa20') {
         fifa18Details.style.display = 'none';
         fifa20Details.style.display = 'block';
         fifa18Link.classList.remove('active');
         fifa20Link.classList.add('active');
+        loadMatchDetails('fifa20');
     }
 }
+
+function loadMatchDetails(game) {    
+    fetch(`http://localhost:5000/all-matches-details`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch match details');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const detailsDiv = game === 'fifa18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
+            detailsDiv.innerHTML = ''; 
+            const fetchFlags = data.matches.map(match => {
+                return Promise.all([
+                    fetch(`https://restcountries.com/v3.1/name/${match.homeTeamName}`).then(res => res.json()),
+                    fetch(`https://restcountries.com/v3.1/name/${match.awayTeamName}`).then(res => res.json())
+                ]).then(([teamAData, teamBData]) => {
+                    match.flagA = teamAData[0].flags.png;
+                    match.flagB = teamBData[0].flags.png;
+                    return match;
+                });
+            });
+
+            Promise.all(fetchFlags).then(matches => {
+                matches.forEach(match => {
+                    const cardHtml = `
+                        <div class="card mt-3">
+                          <div class="card-body">
+                            <h5 class="card-title">${match.homeTeamName} <img src="${match.flagA}" alt="${match.teamA} Flag" width="30"> vs <img src="${match.flagB}" alt="${match.awayTeamName} Flag" width="30"> ${match.teamB}</h5>
+                            <p class="card-text">Date: ${match.date}</p>
+                            <p class="card-text">Goals: ${match.homeGoals} - ${match.awayGoals}</p>
+                          </div>
+                        </div>`;
+                    detailsDiv.innerHTML += cardHtml;
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching match details:', error);
+        });
+}
+
+
+$(document).ready(function() {
+    toggleDetails('fifa18'); 
+});

@@ -556,4 +556,5 @@ input[type="text"] {
 
 .selectBar a.active {
   background-color: #021bba;
+  font-weight: bold;
 }
