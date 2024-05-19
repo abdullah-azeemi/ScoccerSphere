@@ -54,11 +54,14 @@ function displayTeams(teams, containerId) {
         teamDiv.innerHTML = `<h2>${team.name}</h2>
                              <p>League: ${team.league}</p>
                              <p>Wins: ${team.wins}</p>
-                             <p>Loses: ${team.losses}</p>`;
-        teamDiv.addEventListener('click', () => showTeamDetails(team));
+                             <p>Losses: ${team.losses}</p>
+                             <button class="btn btn-primary btn-sm">View Details</button>`;
+        const button = teamDiv.querySelector('button');
+        button.addEventListener('click', () => showTeamDetails(team));
         container.appendChild(teamDiv);
     });
 }
+
 function showTeamDetails(team) {
     let searchName = team.name;
     if (searchName.toLowerCase() === "england") {
@@ -159,9 +162,10 @@ function displayPlayers(players, containerId) {
             <p>Position: ${player.position}</p>
             <p>Team: ${player.team_name}</p>
             <p>Matches Played: ${player.matches_played}</p>
-        `;
+            <button class="btn btn-primary btn-sm">View Details</button>`;
 
-        playerDiv.addEventListener('click', () => showPlayerDetails(player));
+        const button = playerDiv.querySelector('button');
+        button.addEventListener('click', () => showPlayerDetails(player));
         container.appendChild(playerDiv);
     });
 }
@@ -385,12 +389,13 @@ function loadMatchDetailsbyLeague(leagueName) {
 
                 let homeFlag = match.homeTeamName;
                 let awayFlag = match.awayTeamName;
-                if (homeFlag === 'England' || homeFlag === 'Wales'){
+                if (homeFlag === 'England' || homeFlag === 'Wales') {
                     homeFlag = 'UK';
                 }
-                if (awayFlag === 'England' || awayFlag === 'Wales'){
+                if (awayFlag === 'England' || awayFlag === 'Wales') {
                     awayFlag = 'UK';
                 }
+
                 Promise.all([
                     fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(homeFlag)}`).then(res => res.json()),
                     fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(awayFlag)}`).then(res => res.json())
@@ -403,11 +408,11 @@ function loadMatchDetailsbyLeague(leagueName) {
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0 font-weight-bold">
-                                    <img src="${homeTeamFlag}" alt="${match.homeTeamName} flag" style="width: 20px; height: 15px; margin-right: 10px;">
+                                    <img src="${homeTeamFlag}" alt="${match.homeTeamName} flag" style="width: 20px; height: 15px; margin-right: 10px; border-radius:5px;">
                                     ${match.homeTeamName} 
                                     <span class="text-muted">vs</span> 
                                     ${match.awayTeamName}
-                                    <img src="${awayTeamFlag}" alt="${match.awayTeamName} flag" style="width: 20px; height: 15px; margin-left: 10px;">
+                                    <img src="${awayTeamFlag}" alt="${match.awayTeamName} flag" style="width: 20px; height: 15px; margin-left: 10px; border-radius:5px;">
                                 </h5>
                                 <small class="text-muted">${formattedDate}</small>
                             </div>
@@ -428,52 +433,3 @@ function loadMatchDetailsbyLeague(leagueName) {
             console.error('Error fetching match details:', error);
         });
 }
-
-
-
-// function loadMatchDetails(game) {
-//     fetch(`http://localhost:5000/all-matches-details`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to fetch match details');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             const detailsDiv = game === 'fifa18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
-//             detailsDiv.innerHTML = ''; 
-
-//             const fetchFlags = data.map(match => {
-//                 return Promise.all([
-//                     fetch(`https://restcountries.com/v3.1/name/${match.homeTeamName}`).then(response => response.json()),
-//                     fetch(`https://restcountries.com/v3.1/name/${match.awayTeamName}`).then(response => response.json())
-//                 ]).then(([teamAData, teamBData]) => {
-//                     match.flagA = teamAData[0].flags.png;
-//                     match.flagB = teamBData[0].flags.png;
-//                     return match;
-//                 });
-//             });
-
-//             Promise.all(fetchFlags).then(matches => {
-//                 matches.forEach(match => {
-//                     const cardHtml = `
-//                         <div class="card mt-3">
-//                           <div class="card-body">
-//                             <h5 class="card-title">${match.homeTeamName} 
-//                               <img src="${match.flagA}" alt="${match.homeTeamName} Flag" width="30"> 
-//                               vs 
-//                               <img src="${match.flagB}" alt="${match.awayTeamName} Flag" width="30"> 
-//                               ${match.awayTeamName}
-//                             </h5>
-//                             <p class="card-text">Date: ${match.date}</p>
-//                             <p class="card-text">Goals: ${match.homeGoals} - ${match.awayGoals}</p>
-//                           </div>
-//                         </div>`;
-//                     detailsDiv.innerHTML += cardHtml;
-//                 });
-//             });
-//         })
-//         .catch(error => {
-//             console.error('Error fetching match details:', error);
-//         });
-// }
