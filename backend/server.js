@@ -286,6 +286,42 @@ app.get('/search-team/name', (req, res) => {
     });
 });
 
+app.get('/league-matches-details', (req, res) => {
+  const leagueName = req.query.name;
+  let leagueID = 1;
+
+  if (leagueName === 'FIFA-22') {
+    leagueID = 1;
+  } else if (leagueName === 'FIFA-18') {
+    leagueID = 2;
+  }
+  const sqlQuery = `
+    SELECT 
+      m.match_id, m.date, m.homeGoals, m.awayGoals, m.attendance, m.referee, 
+      home_team.name AS homeTeamName, away_team.name AS awayTeamName 
+    FROM 
+      match_data AS m 
+    JOIN 
+      team AS home_team ON m.homeTeam_id = home_team.team_id 
+    JOIN 
+      team AS away_team ON m.awayTeam_id = away_team.team_id 
+    WHERE 
+      m.league_id = ? 
+    ORDER BY 
+      m.match_id, m.date
+  `;
+
+  db.query(sqlQuery, [leagueID], (err, result) => {
+    if (err) {
+      console.error('Error executing MySQL query:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    } else if (result.length === 0) {
+      res.json([]);
+    } else {
+      res.json(result);
+    }
+  });
+});
 
 app.get('/all-matches-details', (req, res) => {
   const sql = `SELECT m.match_id, m.date, m.homeGoals, m.awayGoals, m.attendance, m.referee, home_team.name AS homeTeamName, away_team.name AS awayTeamName 
