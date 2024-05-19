@@ -67,7 +67,7 @@ ADD FOREIGN KEY (league_id) REFERENCES leagues(league_id);
 
 mysql -u admin -p -h football-statistics.cpc806e8o12h.us-east-1.rds.amazonaws.com
 
-CREATE USER 'jeffrey'@'%' IDENTIFIED BY 'somepassword';
+CREATE USER 'sheraz'@'%' IDENTIFIED BY 'sheraz139';
 GRANT SELECT ON [your_database].[some_table] TO 'jeffrey'@'%';
 
 

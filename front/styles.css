@@ -34,6 +34,7 @@ html, body {
 .teamsBg, .playersBg,.matchesBg {
   background-image: url('img/bg.jpg');
   background-size: cover;
+  background-attachment: fixed;
 }
 
 /*Home*/

@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     fetchTeams();
     fetchTopPlayers();
+    //loadMatchDetails();
     toggleForms();
+    displayTeams();
+    loadMatchDetailsbyLeague();
     toggleDetails('fifa18');
 });
 
@@ -305,20 +308,68 @@ function toggleDetails(game) {
         fifa20Details.style.display = 'none';
         fifa18Link.classList.add('active');
         fifa20Link.classList.remove('active');
-        loadMatchDetails('fifa18');
-    } else if (game === 'fifa20') {
+        loadMatchDetailsbyLeague('FIFA-18');
+    } else if (game === 'fifa20' || game === 'fifa22') {
         fifa18Details.style.display = 'none';
         fifa20Details.style.display = 'block';
         fifa18Link.classList.remove('active');
         fifa20Link.classList.add('active');
-        loadMatchDetails('fifa20');
+        loadMatchDetailsbyLeague('FIFA-22');
     }
 }
 
 
+// -> this one
 
-function loadMatchDetails(game) {
-    fetch('http://localhost:5000/all-matches-details')
+// function loadMatchDetailsbyLeague(leagueName) {
+//     // Use the appropriate URL and include the league name as a query parameter
+//     const url = `http://localhost:5000/league-matches-details?name=${encodeURIComponent(leagueName)}`;
+
+//     fetch(url)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to fetch match details');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // Determine which div to populate based on the league name
+//             const detailsDiv = leagueName === 'FIFA-18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
+//             detailsDiv.innerHTML = '';
+//             // Create and append match detail cards
+//             data.forEach(match => {
+//                 const formattedDate = new Date(match.date).toLocaleDateString('en-US');
+//                 const cardHtml = `
+//                 <div class="card mt-3 shadow-sm">
+//                     <div class="card-body">
+//                         <div class="d-flex justify-content-between align-items-center">
+//                             <h5 class="card-title mb-0 font-weight-bold">
+//                                 ${match.homeTeamName} 
+//                                 <span class="text-muted">vs</span> 
+//                                 ${match.awayTeamName}
+//                             </h5>
+//                             <small class="text-muted">${formattedDate}</small>
+//                         </div>
+//                         <hr>
+//                         <div class="d-flex justify-content-between align-items-center">
+//                             <p class="card-text mb-0"><strong>Goals:</strong> ${match.homeGoals} - ${match.awayGoals}</p>
+//                             <button class="btn btn-primary btn-sm">View Details</button>
+//                         </div>
+//                     </div>
+//                 </div>`;
+//                 detailsDiv.innerHTML += cardHtml;
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching match details:', error);
+//         });
+// }
+
+
+function loadMatchDetailsbyLeague(leagueName) {
+    const url = `http://localhost:5000/league-matches-details?name=${encodeURIComponent(leagueName)}`;
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch match details');
@@ -326,35 +377,58 @@ function loadMatchDetails(game) {
             return response.json();
         })
         .then(data => {
-            const detailsDiv = game === 'fifa18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
+            const detailsDiv = leagueName === 'FIFA-18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
             detailsDiv.innerHTML = '';
 
             data.forEach(match => {
-                const cardHtml = `
-                <div class="card mt-3 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0 font-weight-bold">
-                                ${match.homeTeamName} 
-                                <span class="text-muted">vs</span> 
-                                ${match.awayTeamName}
-                            </h5>
-                            <small class="text-muted">${match.date}</small>
+                const formattedDate = new Date(match.date).toLocaleDateString('en-US');
+
+                let homeFlag = match.homeTeamName;
+                let awayFlag = match.awayTeamName;
+                if (homeFlag === 'England' || homeFlag === 'Wales'){
+                    homeFlag = 'UK';
+                }
+                if (awayFlag === 'England' || awayFlag === 'Wales'){
+                    awayFlag = 'UK';
+                }
+                Promise.all([
+                    fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(homeFlag)}`).then(res => res.json()),
+                    fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(awayFlag)}`).then(res => res.json())
+                ]).then(([homeTeamData, awayTeamData]) => {
+                    const homeTeamFlag = homeTeamData[0]?.flags?.png || '';
+                    const awayTeamFlag = awayTeamData[0]?.flags?.png || '';
+
+                    const cardHtml = `
+                    <div class="card mt-3 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0 font-weight-bold">
+                                    <img src="${homeTeamFlag}" alt="${match.homeTeamName} flag" style="width: 20px; height: 15px; margin-right: 10px;">
+                                    ${match.homeTeamName} 
+                                    <span class="text-muted">vs</span> 
+                                    ${match.awayTeamName}
+                                    <img src="${awayTeamFlag}" alt="${match.awayTeamName} flag" style="width: 20px; height: 15px; margin-left: 10px;">
+                                </h5>
+                                <small class="text-muted">${formattedDate}</small>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="card-text mb-0"><strong>Goals:</strong> ${match.homeGoals} - ${match.awayGoals}</p>
+                                <button class="btn btn-primary btn-sm">View Details</button>
+                            </div>
                         </div>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="card-text mb-0"><strong>Goals:</strong> ${match.homeGoals} - ${match.awayGoals}</p>
-                            <button class="btn btn-primary btn-sm">View Details</button>
-                        </div>
-                    </div>
-                </div>`;            
-                detailsDiv.innerHTML += cardHtml;
+                    </div>`;
+                    detailsDiv.innerHTML += cardHtml;
+                }).catch(error => {
+                    console.error('Error fetching team flags:', error);
+                });
             });
         })
         .catch(error => {
             console.error('Error fetching match details:', error);
         });
 }
+
 
 
 // function loadMatchDetails(game) {
