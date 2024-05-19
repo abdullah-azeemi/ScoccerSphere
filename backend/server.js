@@ -287,7 +287,6 @@ app.get('/search-team/name', (req, res) => {
 });
 
 
-// all match details
 app.get('/all-matches-details', (req, res) => {
   const sql = `SELECT m.match_id, m.date, m.homeGoals, m.awayGoals, m.attendance, m.referee, home_team.name AS homeTeamName, away_team.name AS awayTeamName 
                FROM match_data AS m 
@@ -306,7 +305,6 @@ app.get('/all-matches-details', (req, res) => {
       }
   });
 });
-
 
   
 // Error handling middleware

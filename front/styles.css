@@ -558,3 +558,39 @@ input[type="text"] {
   background-color: #021bba;
   font-weight: bold;
 }
+
+.card {
+  border-radius: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.25rem;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.shadow-sm {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+}

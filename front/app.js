@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchTeams();
     fetchTopPlayers();
     toggleForms();
+    toggleDetails('fifa18');
 });
 
 
@@ -314,8 +315,10 @@ function toggleDetails(game) {
     }
 }
 
-function loadMatchDetails(game) {    
-    fetch(`http://localhost:5000/all-matches-details`)
+
+
+function loadMatchDetails(game) {
+    fetch('http://localhost:5000/all-matches-details')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch match details');
@@ -324,30 +327,28 @@ function loadMatchDetails(game) {
         })
         .then(data => {
             const detailsDiv = game === 'fifa18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
-            detailsDiv.innerHTML = ''; 
-            const fetchFlags = data.matches.map(match => {
-                return Promise.all([
-                    fetch(`https://restcountries.com/v3.1/name/${match.homeTeamName}`).then(res => res.json()),
-                    fetch(`https://restcountries.com/v3.1/name/${match.awayTeamName}`).then(res => res.json())
-                ]).then(([teamAData, teamBData]) => {
-                    match.flagA = teamAData[0].flags.png;
-                    match.flagB = teamBData[0].flags.png;
-                    return match;
-                });
-            });
+            detailsDiv.innerHTML = '';
 
-            Promise.all(fetchFlags).then(matches => {
-                matches.forEach(match => {
-                    const cardHtml = `
-                        <div class="card mt-3">
-                          <div class="card-body">
-                            <h5 class="card-title">${match.homeTeamName} <img src="${match.flagA}" alt="${match.teamA} Flag" width="30"> vs <img src="${match.flagB}" alt="${match.awayTeamName} Flag" width="30"> ${match.teamB}</h5>
-                            <p class="card-text">Date: ${match.date}</p>
-                            <p class="card-text">Goals: ${match.homeGoals} - ${match.awayGoals}</p>
-                          </div>
-                        </div>`;
-                    detailsDiv.innerHTML += cardHtml;
-                });
+            data.forEach(match => {
+                const cardHtml = `
+                <div class="card mt-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0 font-weight-bold">
+                                ${match.homeTeamName} 
+                                <span class="text-muted">vs</span> 
+                                ${match.awayTeamName}
+                            </h5>
+                            <small class="text-muted">${match.date}</small>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="card-text mb-0"><strong>Goals:</strong> ${match.homeGoals} - ${match.awayGoals}</p>
+                            <button class="btn btn-primary btn-sm">View Details</button>
+                        </div>
+                    </div>
+                </div>`;            
+                detailsDiv.innerHTML += cardHtml;
             });
         })
         .catch(error => {
@@ -356,6 +357,49 @@ function loadMatchDetails(game) {
 }
 
 
-$(document).ready(function() {
-    toggleDetails('fifa18'); 
-});
+// function loadMatchDetails(game) {
+//     fetch(`http://localhost:5000/all-matches-details`)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to fetch match details');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             const detailsDiv = game === 'fifa18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
+//             detailsDiv.innerHTML = ''; 
+
+//             const fetchFlags = data.map(match => {
+//                 return Promise.all([
+//                     fetch(`https://restcountries.com/v3.1/name/${match.homeTeamName}`).then(response => response.json()),
+//                     fetch(`https://restcountries.com/v3.1/name/${match.awayTeamName}`).then(response => response.json())
+//                 ]).then(([teamAData, teamBData]) => {
+//                     match.flagA = teamAData[0].flags.png;
+//                     match.flagB = teamBData[0].flags.png;
+//                     return match;
+//                 });
+//             });
+
+//             Promise.all(fetchFlags).then(matches => {
+//                 matches.forEach(match => {
+//                     const cardHtml = `
+//                         <div class="card mt-3">
+//                           <div class="card-body">
+//                             <h5 class="card-title">${match.homeTeamName} 
+//                               <img src="${match.flagA}" alt="${match.homeTeamName} Flag" width="30"> 
+//                               vs 
+//                               <img src="${match.flagB}" alt="${match.awayTeamName} Flag" width="30"> 
+//                               ${match.awayTeamName}
+//                             </h5>
+//                             <p class="card-text">Date: ${match.date}</p>
+//                             <p class="card-text">Goals: ${match.homeGoals} - ${match.awayGoals}</p>
+//                           </div>
+//                         </div>`;
+//                     detailsDiv.innerHTML += cardHtml;
+//                 });
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching match details:', error);
+//         });
+// }
