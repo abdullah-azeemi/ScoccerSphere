@@ -1,6 +1,7 @@
 // inlude libraries
 const express = require('express');
 const mysql = require('mysql');
+const multer = require('multer');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -357,6 +358,22 @@ app.use((err, req, res, next) => {
   });
 
 
+
+// Creating users ;p
+
+app.post('/api/signup', upload.single('picture'), (req, res) => {
+  const { name, age, gender, country, goals, assists, rank, position, email, username, password } = req.body;
+  const picture = req.file.filename;
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const sql = `INSERT INTO users (name, age, gender, country, picture, goals, assists, position, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.query(sql, [name, age, gender, country, picture, goals, assists, position, email, username, hashedPassword], (err, result) => {
+      if (err) {
+          console.error('Error:', err);
+          return res.status(500).json({ success: false, message: 'Internal server error' });
+      }
+      res.json({ success: true, message: 'User registered successfully' });
+  });
+});
 
 // Start server
 app.listen(port, () => {
