@@ -15,8 +15,6 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT || 5000;
 
-const upload = multer({ dest: 'uploads/' });
-
 const authenticateJWT = (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -81,18 +79,18 @@ const authenticate = (req, res, next) => {
   });
 
 // user models Schema
-  app.post('/register', async (req, res) => {
-    try {
-      const { username, email, password } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({ username, email, password: hashedPassword });
-      await newUser.save();
-      res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  // app.post('/register', async (req, res) => {
+  //   try {
+  //     const { username, email, password } = req.body;
+  //     const hashedPassword = await bcrypt.hash(password, 10);
+  //     const newUser = new User({ username, email, password: hashedPassword });
+  //     await newUser.save();
+  //     res.status(201).json({ message: 'User registered successfully' });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
   
   app.post('/login', async (req, res) => {
     try {
@@ -361,23 +359,47 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal Server Error' });
   });
 
+// forms dealing starts from here 
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Ensure this directory exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+app.use(express.urlencoded({ extended: true })); 
 
-// Creating users ;p
+app.post('/register', upload.single('picture'), (req, res) => {
+  try {
+    const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
 
-app.post('/api/signup', upload.single('picture'), (req, res) => {
-  const { name, age, gender, country, goals, assists, rank, position, email, username, password } = req.body;
-  const picture = req.file.filename;
-  const hashedPassword = bcrypt.hashSync(password, 10);
-  const sql = `INSERT INTO users (name, age, gender, country, picture, goals, assists, position, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  db.query(sql, [name, age, gender, country, picture, goals, assists, position, email, username, hashedPassword], (err, result) => {
+    if (!password) {
+      return res.status(400).json({ success: false, message: 'Password is required' });
+    }
+
+    const picture = req.file ? req.file.filename : null;
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    const sql = `INSERT INTO users (name, age, gender, country, picture, goals, assists, position, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.query(sql, [name, age, gender, country, picture, goals, assists, position, email, username, hashedPassword], (err, result) => {
       if (err) {
-          console.error('Error:', err);
-          return res.status(500).json({ success: false, message: 'Internal server error' });
+        console.error('Error:', err);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
       }
       res.json({ success: true, message: 'User registered successfully' });
-  });
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 });
+
+
+
 
 // Start server
 app.listen(port, () => {
