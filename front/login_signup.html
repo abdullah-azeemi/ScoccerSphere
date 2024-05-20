@@ -11,7 +11,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles.css">
-    <title>Soccor Sphere | Login & Sign Up</title>
+    <title>Soccer Sphere | Login & Sign Up</title>
 </head>
 <body>
 
@@ -140,7 +140,6 @@
                         </form>                
                         <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
                     </div>
-                    
                 </div>
             </div>            
         </div> 
@@ -148,7 +147,7 @@
     </div>
         <div class="container-fluid footer">
           <div class="row footer-content">
-                <p class="footer-text">&copy; 2024 | Soccor Sphere. All rights reserved</p>
+                <p class="footer-text">&copy; 2024 | Soccer Sphere. All rights reserved</p>
          </div>
          <div class="row footer-content">
             <div class="col">
@@ -162,5 +161,68 @@
         </div>
     </div>
 </body>
-    <script src="app.js"></script>
+    <script>
+        const form = document.getElementById('signupForm');
+        let currentTab = 0;
+        showTab(currentTab);
+
+        function showTab(n) {
+            const tabs = document.getElementsByClassName("tab");
+            tabs[n].style.display = "block";
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (tabs.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Submit";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            const tabs = document.getElementsByClassName("tab");
+            if (n == 1 && !validateForm()) return false;
+            tabs[currentTab].style.display = "none";
+            currentTab = currentTab + n;
+            if (currentTab >= tabs.length) {
+                form.submit();
+                document.getElementById("flip").checked = false;
+                return false;
+            }
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            let valid = true;
+            const tabs = document.getElementsByClassName("tab");
+            const inputs = tabs[currentTab].getElementsByTagName("input");
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].value == "") {
+                    inputs[i].className += " invalid";
+                    valid = false;
+                }
+            }
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid;
+        }
+
+        function fixStepIndicator(n) {
+            const steps = document.getElementsByClassName("step");
+            for (let i = 0; i < steps.length; i++) {
+                steps[i].className = steps[i].className.replace(" active", "");
+            }
+            steps[n].className += " active";
+        }
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Signup successful! Redirecting to login...');
+            document.getElementById("flip").checked = false;
+        });
+    </script>
 </html>
