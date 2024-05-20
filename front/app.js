@@ -6,8 +6,36 @@ document.addEventListener("DOMContentLoaded", function() {
     displayTeams();
     loadMatchDetailsbyLeague();
     toggleDetails('fifa18');
+
+    $('#userDataModal').on('show.bs.modal', function () {
+        fetchUserData();
+    });
 });
 
+//side bar ................
+function openSidebar() {
+    document.getElementById("userSidebar").classList.add("open");
+}
+
+function closeSidebar() {
+    document.getElementById("userSidebar").classList.remove("open");
+}
+
+function fetchUserData() {
+    fetch('http://localhost:5000/user-data') 
+        .then(response => response.json())
+        .then(data => {
+            const doc = document.getElementById('userSidebar');
+            doc.getElementById('userPicture').src = data.picture;
+            doc.getElementById('userName').innerText = data.name;
+            doc.getElementById('userEmail').innerText = data.email;
+            doc.getElementById('userUsername').innerText = data.username;
+            doc.getElementById('userGoals').innerText = `Goals: ${data.goals}`;
+            doc.getElementById('userAssists').innerText = `Assists: ${data.assists}`;
+            doc.getElementById('userPosition').innerText = `Position: ${data.position}`;
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+}
 
 // Teams Details
 
