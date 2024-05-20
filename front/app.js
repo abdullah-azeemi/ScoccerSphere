@@ -323,53 +323,6 @@ function toggleDetails(game) {
 }
 
 
-// -> this one
-
-// function loadMatchDetailsbyLeague(leagueName) {
-//     // Use the appropriate URL and include the league name as a query parameter
-//     const url = `http://localhost:5000/league-matches-details?name=${encodeURIComponent(leagueName)}`;
-
-//     fetch(url)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to fetch match details');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             // Determine which div to populate based on the league name
-//             const detailsDiv = leagueName === 'FIFA-18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
-//             detailsDiv.innerHTML = '';
-//             // Create and append match detail cards
-//             data.forEach(match => {
-//                 const formattedDate = new Date(match.date).toLocaleDateString('en-US');
-//                 const cardHtml = `
-//                 <div class="card mt-3 shadow-sm">
-//                     <div class="card-body">
-//                         <div class="d-flex justify-content-between align-items-center">
-//                             <h5 class="card-title mb-0 font-weight-bold">
-//                                 ${match.homeTeamName} 
-//                                 <span class="text-muted">vs</span> 
-//                                 ${match.awayTeamName}
-//                             </h5>
-//                             <small class="text-muted">${formattedDate}</small>
-//                         </div>
-//                         <hr>
-//                         <div class="d-flex justify-content-between align-items-center">
-//                             <p class="card-text mb-0"><strong>Goals:</strong> ${match.homeGoals} - ${match.awayGoals}</p>
-//                             <button class="btn btn-primary btn-sm">View Details</button>
-//                         </div>
-//                     </div>
-//                 </div>`;
-//                 detailsDiv.innerHTML += cardHtml;
-//             });
-//         })
-//         .catch(error => {
-//             console.error('Error fetching match details:', error);
-//         });
-// }
-
-
 function loadMatchDetailsbyLeague(leagueName) {
     const url = `http://localhost:5000/league-matches-details?name=${encodeURIComponent(leagueName)}`;
 
@@ -432,4 +385,9 @@ function loadMatchDetailsbyLeague(leagueName) {
         .catch(error => {
             console.error('Error fetching match details:', error);
         });
+}
+
+
+function showMatchesDetails(match){
+    //write there
 }
