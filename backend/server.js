@@ -1,6 +1,7 @@
 // inlude libraries
 const express = require('express');
 const mysql = require('mysql');
+const multer = require('multer');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -13,6 +14,8 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 const port = process.env.PORT || 5000;
+
+const upload = multer({ dest: 'uploads/' });
 
 const authenticateJWT = (req, res, next) => {
   const token = req.headers.authorization;
@@ -181,7 +184,9 @@ app.get('/player/:id', (req, res) => {
 
 // fetching top players
   app.get('/top-players', (req, res) => {
-    const sqlQuery = 'SELECT p.name,p.position,p.goals,p.assists,p.yellow_cards,p.red_cards,p.matches_played,p.shirt_no, t.name as team_name FROM player p inner join team t on t.team_id = p.team_id ORDER BY goals DESC LIMIT 10';
+    //const sqlQuery = 'SELECT p.name,p.position,p.goals,p.assists,p.yellow_cards,p.red_cards,p.matches_played,p.shirt_no,p.image_url, t.name as team_name FROM player p inner join team t on t.team_id = p.team_id ORDER BY goals DESC LIMIT 10';
+    const sqlQuery = `Select p.name,p.position,p.image_url,p.team_id,p.rating as goals,p.skill_moves as assists, 
+                       p.yellow_cards,p.red_cards,p.standing,t.name as team_name from players p inner join team t on p.team_id = t.team_id order by goals desc limit 10`;
     db.query(sqlQuery, (err, result) => {
         if (err){
           console.log(err);
@@ -357,6 +362,22 @@ app.use((err, req, res, next) => {
   });
 
 
+
+// Creating users ;p
+
+app.post('/api/signup', upload.single('picture'), (req, res) => {
+  const { name, age, gender, country, goals, assists, rank, position, email, username, password } = req.body;
+  const picture = req.file.filename;
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const sql = `INSERT INTO users (name, age, gender, country, picture, goals, assists, position, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.query(sql, [name, age, gender, country, picture, goals, assists, position, email, username, hashedPassword], (err, result) => {
+      if (err) {
+          console.error('Error:', err);
+          return res.status(500).json({ success: false, message: 'Internal server error' });
+      }
+      res.json({ success: true, message: 'User registered successfully' });
+  });
+});
 
 // Start server
 app.listen(port, () => {

@@ -222,6 +222,29 @@ function showPlayerDetails(player) {
 ///  -------------------------------- FORMS ----------------------------------------------------
 //login and sign up page
 
+document.getElementById("signupForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Signup successful!');
+        } else {
+            alert('Signup failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+
+
+
 function toggleForms() {
     const loginForm = document.getElementById('loginAccountForm');
     const signupForm = document.getElementById('signupAccountForm');
