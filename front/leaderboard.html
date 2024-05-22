@@ -41,17 +41,38 @@
             </div>
         </nav> 
     </div>
+
+     <!-- Leaderboard -->
+     <div class="container leaderboard">
+        <h2 class="text-center">User Leaderboard</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Goals</th>
+                    <th>Assists</th>
+                    <th>Strike Rate</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardTableBody">
+                <!-- Leaderboard data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+
     <!-- Sidebar for User Data -->
     <div id="userSidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
         <div class="content">
             <img id="userPicture" src="" alt="User Picture" class="img-fluid rounded-circle mb-3">
-            <h5 id="userName">John Doe</h5>
-            <p id="userEmail">john.doe@example.com</p>
-            <p id="userUsername">johndoe</p>
-            <p id="userGoals">Goals: 10</p>
-            <p id="userAssists">Assists: 5</p>
-            <p id="userPosition">Position: Forward</p>
+            <h5 id="userName"></h5>
+            <p id="userEmail"></p>
+            <p id="userUsername"></p>
+            <p id="userGoals"></p>
+            <p id="userAssists"></p>
+            <p id="userPosition"></p>
         </div>
     </div>
     
