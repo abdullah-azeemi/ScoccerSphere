@@ -345,6 +345,27 @@ app.get('/all-matches-details', (req, res) => {
   });
 });
 
+
+app.get('/user-data', (req, res) => {
+  const userId = req.query.userId; // Assuming userId is passed as a query parameter
+
+  const sql = `SELECT u.user_id, u.name, u.email, u.username, u.picture, 
+                      u.goals, u.assists, u.position 
+               FROM users AS u 
+               WHERE u.user_id = ?`;
+
+  db.query(sql, [userId], (err, result) => {
+      if (err) {
+          console.error('Error executing MySQL query:', err);
+          return res.status(500).json({ error: 'Internal Server Error' });
+      } else if (result.length === 0) {
+          res.status(404).json({ error: 'User not found' });
+      } else {
+          res.json(result[0]);
+      }
+  });
+});
+
   
 // Error handling middleware
 app.use((err, req, res, next) => {
