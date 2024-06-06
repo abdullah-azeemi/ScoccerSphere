@@ -376,7 +376,7 @@ async function loadMatchDetailsbyLeague(leagueName) {
 }
 
 async function showMatchesDetails(match) {
-    // Write there
+    console.log(match.details.get);
 }
 
 // Leaderboard Page

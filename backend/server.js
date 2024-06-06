@@ -366,7 +366,6 @@ app.get('/user-data', (req, res) => {
   });
 });
 
-  
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
