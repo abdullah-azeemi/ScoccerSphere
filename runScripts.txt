@@ -75,3 +75,49 @@ push on git :
     git add .
     git commit -m ''
     git push origin main
+
+-- Size of each table in 'my_database'
+SELECT 
+    table_name AS "Table",
+    ROUND(((data_length + index_length) / 1024 / 1024), 2) AS "Size (MB)"
+FROM 
+    information_schema.TABLES
+WHERE 
+    table_schema = 'Scoccer_Stats'
+ORDER BY 
+    (data_length + index_length) DESC;
+
+-- Total size of 'my_database'
+SELECT 
+    table_schema AS "Database",
+    ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Size (MB)"
+FROM 
+    information_schema.TABLES
+WHERE 
+    table_schema = 'Scoccer_Stats'
+GROUP BY 
+    table_schema;
+
+-- Size of all databases
+SELECT 
+    table_schema AS "Scoccer_Data",
+    ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Size (MB)"
+FROM 
+    information_schema.TABLES
+GROUP BY 
+    table_schema
+ORDER BY 
+    SUM(data_length + index_length) DESC;
+
+-- Total allocated space in 'my_database'
+SELECT 
+    table_schema AS "Database",
+    ROUND(SUM(data_length) / 1024 / 1024, 2) AS "Data Size (MB)",
+    ROUND(SUM(index_length) / 1024 / 1024, 2) AS "Index Size (MB)",
+    ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS "Total Allocated Space (MB)"
+FROM 
+    information_schema.TABLES
+WHERE 
+    table_schema = 'Scoccer_Stats'
+GROUP BY 
+    table_schema;
