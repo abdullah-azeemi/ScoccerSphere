@@ -143,10 +143,42 @@ app.get('/player', (req, res) => {
     });
   });
 
+  // fetch all players
+app.get('/players', (req, res) => {
+  const sql = `SELECT p.name, p.position, p.goals, p.assists, p.yellow_cards, p.red_cards, p.matches_played, p.shirt_no, t.name as team_name 
+  FROM player p 
+  INNER JOIN team t ON t.team_id = p.team_id`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.json(result);
+    }
+  });
+});
+
+
+
 // fetch players specificllay by id
 app.get('/player/:id', (req, res) => {
     const playerId = req.params.id;
     const sql = 'SELECT * FROM player WHERE id = ?';
+    db.query(sql, playerId, (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      } else if (result.length === 0) {
+        res.status(404).send('Player not found');
+      } else {
+        res.json(result[0]);
+      }
+    });
+  });
+
+  app.get('/players/:id', (req, res) => {
+    const playerId = req.params.id;
+    const sql = 'SELECT * FROM players WHERE id = ?';
     db.query(sql, playerId, (err, result) => {
       if (err) {
         console.log(err);
@@ -178,10 +210,30 @@ app.get('/player/:id', (req, res) => {
     });
 });
 
+app.get('/search-players/:name', (req, res) => {
+  const playerId = req.params.name.toLowerCase();
+  const sqlQuery = ` SELECT 
+    p.player_id,p.name,p.image_url,p.dob,p.height,p.position,p.rating,p.potential,p.value,p.wage,p.preferred_foot,p.weak_foot,p.skill_moves,p.international_ranking,p.specialities,p.club_id,p.club_name,
+    p.club_league_name,p.club_logo,p.club_rating,p.country,p.team_id,p.country_flag,p.country_rating,p.country_position,p.goals,p.yellow_cards,p.red_cards,p.dribbling,
+    p.long_pass,p.agility, p.standing, p.matches_played, t.name as team_name  FROM 
+    players p INNER JOIN team t ON p.team_id = t.team_id Where LOWER(p.name) LIKE ?;`;
+
+  db.query(sql, [`%${playerId}%`], (err, result) => {
+      if (err) {
+          console.log(err);
+          res.status(500).send('Internal Server Error');
+      } else if (result.length === 0) {
+          res.json([]);
+      } else {
+          res.json(result);
+      }
+  });
+});
+
 
 
 // fetching top players
-  app.get('/top-players', (req, res) => {
+  app.get('/top-player', (req, res) => {
     //const sqlQuery = 'SELECT p.name,p.position,p.goals,p.assists,p.yellow_cards,p.red_cards,p.matches_played,p.shirt_no,p.image_url, t.name as team_name FROM player p inner join team t on t.team_id = p.team_id ORDER BY goals DESC LIMIT 10';
     const sqlQuery = `Select p.name,p.position,p.image_url,p.team_id,p.rating as goals,p.skill_moves as assists, 
                        p.yellow_cards,p.red_cards,p.standing,t.name as team_name from players p inner join team t on p.team_id = t.team_id order by goals desc limit 10`;
@@ -192,6 +244,26 @@ app.get('/player/:id', (req, res) => {
         res.json(result);
         }
     });
+})
+
+// fetching top players
+app.get('/top-players', (req, res) => {
+  const sqlQuery = `
+SELECT 
+    p.player_id,p.name,p.image_url,p.dob,p.height,p.position,p.rating,p.potential,p.value,p.wage,p.preferred_foot,p.weak_foot,p.skill_moves,p.international_ranking,p.specialities,p.club_id,p.club_name,
+    p.club_league_name,p.club_logo,p.club_rating,p.country,p.team_id,p.country_flag,p.country_rating,p.country_position,p.goals,p.yellow_cards,p.red_cards,p.dribbling,
+    p.long_pass,p.agility, p.standing, p.matches_played, t.name as team_name 
+FROM 
+    players p 
+INNER JOIN team t ON p.team_id = t.team_id ORDER BY p.goals DESC LIMIT 10;`;
+
+  db.query(sqlQuery, (err, result) => {
+      if (err){
+        console.log(err);
+      }else{
+      res.json(result);
+      }
+  });
 })
 
   
@@ -232,6 +304,24 @@ app.delete('/players/:id', (req, res) => {
 app.get('/player-details/:playerId', (req, res) => {
   const playerId = req.params.playerId; 
   const sqlQuery = 'SELECT * FROM player WHERE player_id = ?';
+
+  db.query(sqlQuery, [playerId], (err, results) => {
+      if (err) {
+          console.error('Error fetching player details:', err);
+          res.status(500).send('Error fetching player details');
+          return;
+      }
+      if (results.length > 0) {
+          res.json(results[0]);
+      } else {
+          res.status(404).send('Player not found');
+      }
+  });
+});
+// for players(more data table)
+app.get('/players-details/:playerId', (req, res) => {
+  const playerId = req.params.playerId; 
+  const sqlQuery = 'SELECT * FROM players WHERE player_id = ?';
 
   db.query(sqlQuery, [playerId], (err, results) => {
       if (err) {
