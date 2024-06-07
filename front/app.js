@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     try {
         await fetchTeams();
         await fetchTopPlayers();
+        await fetchUsers();
         toggleDetailsMain('fifa');
         // await loadMatchDetails();
         toggleForms();
@@ -37,7 +38,7 @@ function closeSidebar() {
 
 async function fetchUserData() {
     try {
-        const response = await fetch('http://localhost:5000/user-data');
+        const response = await fetch('http://localhost:5000/users');
         const data = await response.json();
         const doc = document.getElementById('userSidebar');
         doc.getElementById('userPicture').src = data.picture;
@@ -60,6 +61,17 @@ async function fetchTeams() {
         displayTeams(teams, 'teamsContainer');
     } catch (error) {
         console.error('Error fetching teams:', error);
+    }
+}
+
+async function fetchUsers(){
+    try {
+        const response = await fetch('http://localhost:5000/users');
+        const users = await response.json();
+        displayUsers(users, 'leaderboardTableBody');
+    }
+    catch (error) {
+        console.error('Error fetching users:', error);
     }
 }
 
@@ -106,6 +118,27 @@ function displayTeams(teams, containerId) {
         console.error('Error displaying teams:', error);
     }
 }
+function displayUsers(users, containerId) {
+    try {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; // Clear any existing content
+        
+        users.forEach(user => {
+            const userRow = document.createElement('tr');
+            userRow.innerHTML = `
+                <td>${user.rankLeaderboard}</td>
+                <td>${user.name}</td>
+                <td>${user.goals}</td>
+                <td>${user.assists}</td>
+                <td>${user.goals}</td>
+            `;
+            container.appendChild(userRow);
+        });
+    } catch (error) {
+        console.error('Error displaying users:', error);
+    }
+}
+
 
 async function showTeamDetails(team) {
     try {
@@ -163,7 +196,7 @@ async function fetchTopPlayers() {
 async function searchPlayers() {
     try {
         const searchText = document.getElementById('searchBox').value;
-        const response = await fetch(`http://localhost:5000/search-player/${searchText}`);
+        const response = await fetch(`http://localhost:5000/search-players/${searchText}`);
         if (!response.ok) {
             if (response.status === 404) {
                 return [];
@@ -196,7 +229,7 @@ function displayPlayers(players, containerId) {
             playerDiv.className = 'player-card';
             playerDiv.innerHTML = `
                 <h2>${player.name}</h2>
-                <p>Position: ${player.position}</p>
+                <p>Value : ${player.value}</p>
                 <p>Team: ${player.team_name}</p>
                 <p>Matches Played: ${player.matches_played}</p>
                 <button class="btn btn-primary btn-sm">View Details</button>`;
@@ -231,13 +264,15 @@ async function showPlayerDetails(player) {
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <div style="border-right: 1px solid #ccc; padding-right: 10px;">
-                            <p>Position: ${player.position}</p>
+                            <p>Height: ${player.height} cm</p>
                             <p>Goals: ${player.goals}</p>
-                            <p>Assists: ${player.assists}</p>
+                            <p>Matches Played : ${player.matches_played}</p>
+                            <p>Preffered Foot: ${player.preferred_foot}</p>
                         </div>
                         <div style="padding-left: 10px;">
-                            <p>Matches Played: ${player.matches_played}</p>
-                            <p>Shirt Number: ${player.shirt_no}</p>
+                            <p>Agility: ${player.agility}</p>
+                            <p>Club Name: ${player.club_name}</p>
+                            <p>Dribbling: ${player.dribbling}</p>
                             <p>Team: ${player.team_name}</p>
                         </div>
                     </div>
@@ -344,12 +379,14 @@ function toggleDetails(game) {
     const allDetails = [
         'fifa18Details', 'fifa20Details',
         'cl18Details', 'cl20Details',
-        'sc18Details', 'sc20Details'
+        'sc18Details', 'sc20Details',
+        'PlyrDetails','PlyrValueDetails','PlyrAverageDetails'
     ];
     const allLinks = [
         'fifa18Link', 'fifa20Link',
         'cl18Link', 'cl20Link',
-        'sc18Link', 'sc20Link'
+        'sc18Link', 'sc20Link',
+        'Plyr1Link','Plyr2Link','Plyr3Link'
     ];
     
     allDetails.forEach(detail => document.getElementById(detail).style.display = 'none');
@@ -372,6 +409,11 @@ function toggleDetails(game) {
         document.getElementById(`${game}Details`).style.display = 'block';
         document.getElementById(`${game}Link`).classList.add('active');
         loadMatchDetailsbyLeague(game === 'sc18' ? 'Super Cup 2018' : 'Super Cup 2021');
+    }
+    if(game.startsWith('Plyr')){
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadPlayerStatsDetails(game === 'Plyr1' ? 'Plyr1' : game === 'Plyr2' ? 'Plyr2' : 'Plyr3');
     }
 }
 
@@ -425,7 +467,7 @@ function toggleDetails(game) {
     const allDetails = [
         'fifa18Details', 'fifa20Details',
         'cl18Details', 'cl20Details',
-        'sc18Details', 'sc20Details'
+        'sc18Details', 'sc20Details',
     ];
     const allLinks = [
         'fifa18Link', 'fifa20Link',

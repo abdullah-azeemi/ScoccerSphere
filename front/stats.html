@@ -6,27 +6,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
-    <title>Soccer Sphere | Players Details</title>
+    <title>Soccer Sphere | Stats</title>
 </head>
 <body>
 
-  <div class="playersBg">
-        <nav class="navbar navbar-expand-lg navbar-black">
+  <div class="matchesBg">
+      <nav class="navbar navbar-expand-lg navbar-black">
           <a class="navbar-brand" href="index.html">Soccer Sphere</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div class="navbar-nav ml-auto">
@@ -34,7 +25,7 @@
                   <a class="nav-link" href="competition.html"><i class="fa fa-trophy"></i> Leagues & Competitions</a>
                   <a class="nav-link" href="matches.html"><i class="fa fa-soccer-ball-o"></i> Matches</a>
                   <a class="nav-link" href="login_signup.html"><i class="fa fa-user"></i> Login & Sign Up</a>
-
+  
                   <!-- Hamburger Menu -->
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,34 +41,43 @@
       </nav> 
 
       <div class="container mt-5">
-          <input type="text" id="searchBox" placeholder="Search Players" class="form-control">
-          <button onclick="searchPlayers()" class="btn btn-primary mt-2">Search</button>
-          <div id="searchResults" class="players-container"></div>
-          <h1>Top 10 Players:</h1>
-          <div id="playersContainer" class="players-container">
-              <!--Players will be added dynamically...!-->
+        <div id="upperSB" class="selectBar">
+            <a href="#" onclick="toggleDetailsMain('fifa')" id="fifaLink" class="active">Players Stats</a>
+            <a href="#" onclick="toggleDetailsMain('ChampionLeagues')" id="ClLink">Matches Stats</a>
+            <a href="#" onclick="toggleDetailsMain('SuperCup')" id="ScLink">League Stats</a>
+        </div>
+        <div id="lowerSB" class="selectBar">
+            <!-- The buttons for 2018 and 2021 will be dynamically inserted here -->
+        </div>
+    
+        <div id="fifa18Details" style="display: block;"></div>
+        <div id="fifa20Details" style="display: none;"></div>
+        <div id="cl18Details" style="display: none;"></div>
+        <div id="cl20Details" style="display: none;"></div>
+        <div id="sc18Details" style="display: none;"></div>
+        <div id="sc20Details" style="display: none;"></div>
+    </div>
+    
+    <!-- Matches Details Modal -->
+    <div class="modal fade" id="matchesDetailModal" tabindex="-1" role="dialog" aria-labelledby="matchesDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="matchesDetailModalLabel">Match Details:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-      </div>
-
-    <!-- Player Details Modal -->
-      <div class="modal fade" id="playerDetailModal" tabindex="-1" role="dialog" aria-labelledby="playerDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="playerDetailModalLabel">Player Details:</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="modalBody">
-              <!-- Additional details will be added here -->
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+          <div class="modal-body" id="modalBody">
+            <!-- Additional details will be added here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
+    </div>
+
 
 
     <!-- Sidebar for User Data -->
@@ -93,12 +93,12 @@
           <p id="userPosition">Position: Forward</p>
       </div>
   </div>
-
+  
   <div class="container-fluid footer">
       <div class="row footer-content">
           <p class="footer-text">&copy; 2024 | Soccer Sphere. All rights reserved</p>
       </div>
   </div>
-</body>
-  <script src="app.js"></script>
+  </body>
+     <script src="app.js"></script>
 </html>
