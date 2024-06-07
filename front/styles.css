@@ -594,6 +594,10 @@ input[type="text"] {
   text-align: center; 
 }
 
+#upperSB a{
+  width: 33.33%;
+}
+
 .selectBar a:hover {
   background-color: #000;
 }
