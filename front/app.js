@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     try {
         await fetchTeams();
         await fetchTopPlayers();
+        toggleDetailsMain('fifa');
         // await loadMatchDetails();
         toggleForms();
         displayTeams();
@@ -293,28 +294,165 @@ function toggleForms() {
 window.toggleForms = toggleForms;
 
 // Matches Page
-function toggleDetails(game) {
-    try {
-        var fifa18Details = document.getElementById('fifa18Details');
-        var fifa20Details = document.getElementById('fifa20Details');
-        var fifa18Link = document.getElementById('fifa18Link');
-        var fifa20Link = document.getElementById('fifa20Link');
+function toggleDetailsMain(league) {
+    const fifaLink = document.getElementById('fifaLink');
+    const clLink = document.getElementById('ClLink');
+    const scLink = document.getElementById('ScLink');
 
-        if (game === 'fifa18') {
-            fifa18Details.style.display = 'block';
-            fifa20Details.style.display = 'none';
-            fifa18Link.classList.add('active');
-            fifa20Link.classList.remove('active');
-            loadMatchDetailsbyLeague('FIFA-18');
-        } else if (game === 'fifa20' || game === 'fifa22') {
-            fifa18Details.style.display = 'none';
-            fifa20Details.style.display = 'block';
-            fifa18Link.classList.remove('active');
-            fifa20Link.classList.add('active');
-            loadMatchDetailsbyLeague('FIFA-22');
+    const leagueLinks = [fifaLink, clLink, scLink];
+    leagueLinks.forEach(link => link.classList.remove('active'));
+
+    if (league === 'fifa') {
+        fifaLink.classList.add('active');
+        updateYearButtons('fifa');
+        toggleDetails('fifa18');
+    } else if (league === 'ChampionLeagues') {
+        clLink.classList.add('active');
+        updateYearButtons('cl');
+        toggleDetails('cl18');
+    } else if (league === 'SuperCup') {
+        scLink.classList.add('active');
+        updateYearButtons('sc');
+        toggleDetails('sc18');
+    }
+}
+
+function updateYearButtons(league) {
+    const lowerSB = document.getElementById('lowerSB');
+    lowerSB.innerHTML = '';
+
+    if (league === 'fifa') {
+        lowerSB.innerHTML = `
+            <a href="#" onclick="toggleDetails('fifa18')" id="fifa18Link" class="active">FIFA 18</a>
+            <a href="#" onclick="toggleDetails('fifa20')" id="fifa20Link">FIFA 22</a>
+        `;
+    } else if (league === 'cl') {
+        lowerSB.innerHTML = `
+            <a href="#" onclick="toggleDetails('cl18')" id="cl18Link" class="active">Champion Leagues 18</a>
+            <a href="#" onclick="toggleDetails('cl20')" id="cl20Link">Champion Leagues 22</a>
+        `;
+    } else if (league === 'sc') {
+        lowerSB.innerHTML = `
+            <a href="#" onclick="toggleDetails('sc18')" id="sc18Link" class="active">Super Cup 18</a>
+            <a href="#" onclick="toggleDetails('sc20')" id="sc20Link">Super Cup 22</a>
+        `;
+    }
+}
+
+// Function to toggle the details view based on the selected year
+function toggleDetails(game) {
+    const allDetails = [
+        'fifa18Details', 'fifa20Details',
+        'cl18Details', 'cl20Details',
+        'sc18Details', 'sc20Details'
+    ];
+    const allLinks = [
+        'fifa18Link', 'fifa20Link',
+        'cl18Link', 'cl20Link',
+        'sc18Link', 'sc20Link'
+    ];
+    
+    allDetails.forEach(detail => document.getElementById(detail).style.display = 'none');
+    allLinks.forEach(link => {
+        const linkElement = document.getElementById(link);
+        if (linkElement) {
+            linkElement.classList.remove('active');
         }
-    } catch (error) {
-        console.error('Error toggling details:', error);
+    });
+
+    if (game.startsWith('fifa')) {
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadMatchDetailsbyLeague(game === 'fifa18' ? 'FIFA-18' : 'FIFA-22');
+    } else if (game.startsWith('cl')) {
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadMatchDetailsbyLeague(game === 'cl18' ? 'Champions League 2018' : 'Champions League 2021');
+    } else if (game.startsWith('sc')) {
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadMatchDetailsbyLeague(game === 'sc18' ? 'Super Cup 2018' : 'Super Cup 2021');
+    }
+}
+
+// Function to load match details by league
+function toggleDetailsMain(league) {
+    const fifaLink = document.getElementById('fifaLink');
+    const clLink = document.getElementById('ClLink');
+    const scLink = document.getElementById('ScLink');
+
+    const leagueLinks = [fifaLink, clLink, scLink];
+    leagueLinks.forEach(link => link.classList.remove('active'));
+
+    if (league === 'fifa') {
+        fifaLink.classList.add('active');
+        updateYearButtons('fifa');
+        toggleDetails('fifa18');
+    } else if (league === 'ChampionLeagues') {
+        clLink.classList.add('active');
+        updateYearButtons('cl');
+        toggleDetails('cl18');
+    } else if (league === 'SuperCup') {
+        scLink.classList.add('active');
+        updateYearButtons('sc');
+        toggleDetails('sc18');
+    }
+}
+
+function updateYearButtons(league) {
+    const lowerSB = document.getElementById('lowerSB');
+    lowerSB.innerHTML = '';
+
+    if (league === 'fifa') {
+        lowerSB.innerHTML = `
+            <a href="#" onclick="toggleDetails('fifa18')" id="fifa18Link" class="active">FIFA 18</a>
+            <a href="#" onclick="toggleDetails('fifa20')" id="fifa20Link">FIFA 22</a>
+        `;
+    } else if (league === 'cl') {
+        lowerSB.innerHTML = `
+            <a href="#" onclick="toggleDetails('cl18')" id="cl18Link" class="active">Champion League 18</a>
+            <a href="#" onclick="toggleDetails('cl20')" id="cl20Link">Champion League 22</a>
+        `;
+    } else if (league === 'sc') {
+        lowerSB.innerHTML = `
+            <a href="#" onclick="toggleDetails('sc18')" id="sc18Link" class="active">Super Cup 18</a>
+            <a href="#" onclick="toggleDetails('sc20')" id="sc20Link">Super Cup 22</a>
+        `;
+    }
+}
+
+function toggleDetails(game) {
+    const allDetails = [
+        'fifa18Details', 'fifa20Details',
+        'cl18Details', 'cl20Details',
+        'sc18Details', 'sc20Details'
+    ];
+    const allLinks = [
+        'fifa18Link', 'fifa20Link',
+        'cl18Link', 'cl20Link',
+        'sc18Link', 'sc20Link'
+    ];
+    
+    allDetails.forEach(detail => document.getElementById(detail).style.display = 'none');
+    allLinks.forEach(link => {
+        const linkElement = document.getElementById(link);
+        if (linkElement) {
+            linkElement.classList.remove('active');
+        }
+    });
+
+    if (game.startsWith('fifa')) {
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadMatchDetailsbyLeague(game === 'fifa18' ? 'FIFA-18' : 'FIFA-22');
+    } else if (game.startsWith('cl')) {
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadMatchDetailsbyLeague(game === 'cl18' ? 'Champions League 2018' : 'Champions League 2021');
+    } else if (game.startsWith('sc')) {
+        document.getElementById(`${game}Details`).style.display = 'block';
+        document.getElementById(`${game}Link`).classList.add('active');
+        loadMatchDetailsbyLeague(game === 'sc18' ? 'Super Cup 2018' : 'Super Cup 2021');
     }
 }
 
@@ -326,7 +464,11 @@ async function loadMatchDetailsbyLeague(leagueName) {
             throw new Error('Failed to fetch match details');
         }
         const data = await response.json();
-        const detailsDiv = leagueName === 'FIFA-18' ? document.getElementById('fifa18Details') : document.getElementById('fifa20Details');
+        const detailsDiv = document.getElementById(
+            leagueName.includes('FIFA') ? (leagueName === 'FIFA-18' ? 'fifa18Details' : 'fifa20Details') :
+            leagueName.includes('Champions') ? (leagueName === 'Champions League 2018' ? 'cl18Details' : 'cl20Details') :
+            (leagueName === 'Super Cup 2018' ? 'sc18Details' : 'sc20Details')
+        );
         detailsDiv.innerHTML = '';
 
         for (const match of data) {
@@ -374,6 +516,7 @@ async function loadMatchDetailsbyLeague(leagueName) {
         console.error('Error fetching match details:', error);
     }
 }
+
 
 async function showMatchesDetails(match) {
     console.log(match.details.get);

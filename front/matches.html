@@ -48,17 +48,25 @@
               </div>
           </div>
       </nav> 
-    <div class="container mt-5">
-        <div class="selectBar">
-          <a href="#" onclick="toggleDetails('fifa18')" id="fifa18Link" class="active">FIFA 18</a>
-          <a href="#" onclick="toggleDetails('fifa20')" id="fifa20Link">FIFA 22</a>
+
+      <div class="container mt-5">
+        <div id="upperSB" class="selectBar">
+            <a href="#" onclick="toggleDetailsMain('fifa')" id="fifaLink" class="active">FIFA</a>
+            <a href="#" onclick="toggleDetailsMain('ChampionLeagues')" id="ClLink">Champion Leagues</a>
+            <a href="#" onclick="toggleDetailsMain('SuperCup')" id="ScLink">Super Cup</a>
         </div>
-        
+        <div id="lowerSB" class="selectBar">
+            <!-- The buttons for 2018 and 2021 will be dynamically inserted here -->
+        </div>
+    
         <div id="fifa18Details" style="display: block;"></div>
         <div id="fifa20Details" style="display: none;"></div>
-
-    </div>  
-
+        <div id="cl18Details" style="display: none;"></div>
+        <div id="cl20Details" style="display: none;"></div>
+        <div id="sc18Details" style="display: none;"></div>
+        <div id="sc20Details" style="display: none;"></div>
+    </div>
+    
     <!-- Matches Details Modal -->
     <div class="modal fade" id="matchesDetailModal" tabindex="-1" role="dialog" aria-labelledby="matchesDetailModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
