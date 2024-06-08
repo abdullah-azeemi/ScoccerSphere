@@ -6,41 +6,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles.css">
     <title>Soccer Sphere | Login & Sign Up</title>
 </head>
 <body>
-
-        <nav class="navbar navbar-expand-lg navbar-black">
-            <a class="navbar-brand" href="index.html">Soccer Sphere</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ml-auto">
-                    <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
-                    <a class="nav-link" href="competition.html"><i class="fa fa-trophy"></i> Leagues & Competitions</a>
-                    <a class="nav-link" href="matches.html"><i class="fa fa-soccer-ball-o"></i> Matches</a>
-                    <a class="nav-link" href="login_signup.html"><i class="fa fa-user"></i> Login & Sign Up</a>
-    
-                    <!-- Hamburger Menu -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#" onclick="openSidebar()"><i class="fa fa-user-circle"></i> User Data</a>
-                            <a class="dropdown-item" href="leaderboard.html"><i class="fa fa-list-ol"></i> Leaderboard</a>
-                        </div>
-                    </li>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.html">Soccer Sphere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
+                <a class="nav-link" href="competition.html"><i class="fa fa-trophy"></i> Leagues & Competitions</a>
+                <a class="nav-link" href="matches.html"><i class="fa fa-soccer-ball-o"></i> Matches</a>
+                <a class="nav-link" href="login_signup.html"><i class="fa fa-user"></i> Login & Sign Up</a>
+                <!-- Hamburger Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#" onclick="openSidebar()"><i class="fa fa-user-circle"></i> User Data</a>
+                        <a class="dropdown-item" href="leaderboard.html"><i class="fa fa-list-ol"></i> Leaderboard</a>
+                        <a class="dropdown-item" href="stats.html"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a>
+                    </div>
+                </li>
             </div>
-        </nav> 
-    
+        </div>
+    </nav> 
     <div class="bg">
         <div class="container">
             <input type="checkbox" id="flip">
@@ -94,7 +89,6 @@
                                         <option value="">Select gender</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
-                                        <option value="Trans">Trans</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
@@ -104,7 +98,7 @@
                                 </div>
                                 <div class="input-box">
                                     <i class="fa fa-upload"></i>
-                                    <input type="file" id="pictureUpload" accept="img/*" required>
+                                    <input type="file" id="pictureUpload" accept="image/*" required>
                                 </div>
                             </div>
                             <div class="tab">
@@ -128,11 +122,11 @@
                                 </div>
                                 <div class="input-box">
                                     <i class="fa fa-user"></i>
-                                    <input type="username" placeholder="Enter your username" required>
+                                    <input type="text" placeholder="Enter your username" required>
                                 </div>
                                 <div class="input-box">
                                     <i class="fa fa-lock"></i>
-                                    <input type="password" placeholder="Confirm your password" required>
+                                    <input type="password" placeholder="Enter your password" required>
                                 </div>
                             </div>
                             <div style="text-align:center;margin-top:40px;">
@@ -153,13 +147,11 @@
             </div>            
         </div> 
     </div>
-    </div>
-
-        <!-- Sidebar for User Data -->
+    <!-- Sidebar for User Data -->
     <div id="userSidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
         <div class="content">
-            <img id="userPicture" src="backend\uploads\1716223527931-download.jpg" alt="User Picture" class="img-fluid rounded-circle mb-3">
+            <img id="userPicture" src="backend/uploads/1716223527931-download.jpg" alt="User Picture" class="img-fluid rounded-circle mb-3">
             <h5 id="userName">John Doe</h5>
             <p id="userEmail">john.doe@example.com</p>
             <p id="userUsername">johndoe</p>
@@ -168,34 +160,34 @@
             <p id="userPosition">Position: Forward</p>
         </div>
     </div>
-
     <div class="container-fluid footer">
         <div class="row footer-content">
             <p class="footer-text">&copy; 2024 | Soccer Sphere. All rights reserved</p>
         </div>
     </div>
-    
-</body>
-<script src="app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-pzjw8f+ua7Kw1TIqM1rA8tt8Xb7xkyqsXU5fRhj6ljFW+O8hZ3G1N3U7rCV5q2r5" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvf6VOzrtw3yZ3Qvq8tH/XN5O8B2CdpZ8Cz5p+X2or" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
     <script>
-        const form = document.getElementById('signupForm');
+        // JavaScript to handle form navigation
         let currentTab = 0;
         showTab(currentTab);
 
         function showTab(n) {
             const tabs = document.getElementsByClassName("tab");
             tabs[n].style.display = "block";
-            if (n == 0) {
+            if (n === 0) {
                 document.getElementById("prevBtn").style.display = "none";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
-            if (n == (tabs.length - 1)) {
+            if (n === (tabs.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
             }
-            fixStepIndicator(n)
+            fixStepIndicator(n);
         }
 
         function nextPrev(n) {
@@ -204,8 +196,7 @@
             tabs[currentTab].style.display = "none";
             currentTab = currentTab + n;
             if (currentTab >= tabs.length) {
-                form.submit();
-                document.getElementById("flip").checked = false;
+                document.getElementById("signupForm").submit();
                 return false;
             }
             showTab(currentTab);
@@ -235,11 +226,13 @@
             steps[n].className += " active";
         }
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Signup successful! Redirecting to login...');
-            document.getElementById("flip").checked = false;
-        });
+        function openSidebar() {
+            document.getElementById("userSidebar").style.width = "250px";
+        }
+
+        function closeSidebar() {
+            document.getElementById("userSidebar").style.width = "0";
+        }
     </script>
+</body>
 </html>
-        

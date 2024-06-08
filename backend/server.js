@@ -78,19 +78,18 @@ const authenticate = (req, res, next) => {
     // logic needs to be implemneted here for router logic
   });
 
-// user models Schema
-  // app.post('/register', async (req, res) => {
-  //   try {
-  //     const { username, email, password } = req.body;
-  //     const hashedPassword = await bcrypt.hash(password, 10);
-  //     const newUser = new User({ username, email, password: hashedPassword });
-  //     await newUser.save();
-  //     res.status(201).json({ message: 'User registered successfully' });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ error: 'Internal Server Error' });
-  //   }
-  // });
+  app.post('/register', async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({ username, email, password: hashedPassword });
+      await newUser.save();
+      res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
   
   app.post('/login', async (req, res) => {
     try {
@@ -212,11 +211,11 @@ app.get('/player/:id', (req, res) => {
 
 app.get('/search-players/:name', (req, res) => {
   const playerId = req.params.name.toLowerCase();
-  const sqlQuery = ` SELECT 
+  const sql = ` SELECT 
     p.player_id,p.name,p.image_url,p.dob,p.height,p.position,p.rating,p.potential,p.value,p.wage,p.preferred_foot,p.weak_foot,p.skill_moves,p.international_ranking,p.club_id,p.club_name,
     p.club_league_name,p.club_logo,p.club_rating,p.country,p.team_id,p.country,p.club_rating,p.country_position,p.goals,p.yellow_cards,p.red_cards,p.dribbling,
     p.long_pass,p.agility, p.standing, p.matches_played, t.name as team_name  FROM 
-    players p INNER JOIN team t ON p.team_id = t.team_id Where LOWER(p.name) LIKE ?;`;
+    players p INNER JOIN team t ON p.team_id = t.team_id Where p.name LIKE ?;`;
 
   db.query(sql, [`%${playerId}%`], (err, result) => {
       if (err) {
@@ -539,6 +538,18 @@ app.get('/users-leaderboard', (req, res) => {
   });
 })
 
+// league queries start from here -------------------------------->
+app.get('/leagues', (req, res) => {
+  const sqlQuery = 'SELECT * FROM leagues';
+  db.query(sqlQuery, (err, result) => {
+      if (err){
+        console.log(err);
+      }else{
+      res.json(result);
+      }
+  });
+})
+
 
 
 
@@ -568,14 +579,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.use(express.urlencoded({ extended: true })); 
 
-app.post('/register', upload.single('picture'), (req, res) => {
+app.post('/signup', upload.single('picture'), (req, res) => {
   try {
     const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
 
     if (!password) {
       return res.status(400).json({ success: false, message: 'Password is required' });
     }
-
     const picture = req.file ? req.file.filename : null;
     const hashedPassword = bcrypt.hashSync(password, 10);
 

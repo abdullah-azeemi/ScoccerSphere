@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         await fetchTeams();
         await fetchTopPlayers();
         await fetchUsers();
+        await fetchLeagues();
         toggleDetailsMain('fifa');
         // await loadMatchDetails();
         toggleForms();
@@ -12,8 +13,10 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         $('#userDataModal').on('show.bs.modal', async function () {
             await fetchUserData();
+            await fetchLeaguesMatches();
         });
         await fetchUserData();
+        await fetchLeaguesMatches();
     } catch (error) {
         console.error('Error during DOMContentLoaded event:', error);
     }
@@ -53,6 +56,19 @@ async function fetchUserData() {
     }
 }
 
+async function fetchLeaguesData() {
+    try {
+        const response = await fetch('http://localhost:5000/leagues');
+        const data = await response.json();
+        const doc = document.getElementById('userSidebar');
+        doc.getElementById('league_id').innerText = `League ID: ${data.league_id}`;
+        doc.getElementById('name').innerText = `Name: ${data.name}`;
+        doc.getElementById('matches_played').innerText = `Matches Played: ${data.matches_played}`;
+    } catch (error) {
+        console.error('Error fetching leagues data:', error);
+    }
+}
+
 // Teams Details
 async function fetchTeams() {
     try {
@@ -72,6 +88,16 @@ async function fetchUsers(){
     }
     catch (error) {
         console.error('Error fetching users:', error);
+    }
+}
+async function fetchLeagues(){
+    try {
+        const response = await fetch('http://localhost:5000/leagues');
+        const leagues = await response.json();
+        displayLeagues(leagues, 'LeaguesTableBody');
+    }
+    catch (error) {
+        console.error('Error fetching Leagues:', error);
     }
 }
 
@@ -138,6 +164,24 @@ function displayUsers(users, containerId) {
         console.error('Error displaying users:', error);
     }
 }
+function displayLeagues(leagues, containerId) {
+    try {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; // Clear any existing content
+        
+        leagues.forEach(league => {
+            const userRow = document.createElement('tr');
+            userRow.innerHTML = `
+                <td>${league.league_id}</td>
+                <td>${league.name}</td>
+                <td>${league.matches_played}</td>
+            `;
+            container.appendChild(userRow);
+        });
+    } catch (error) {
+        console.error('Error displaying Leagues:', error);
+    }
+}
 
 
 async function showTeamDetails(team) {
@@ -189,7 +233,6 @@ async function fetchTopPlayers() {
         displayPlayers(players, 'playersContainer');
     } catch (error) {
         console.error('Error fetching top players:', error);
-        alert('Failed to fetch top players.');
     }
 }
 
@@ -587,6 +630,29 @@ async function fetchUserData() {
                 <td>${user.strikeRate.toFixed(2)}</td>
             `;
             leaderboardTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+}
+
+
+// Leagues Data
+async function fetchLeaguesData() {
+    try {
+        const response = await fetch('/api/leagues');
+        const leagues = await response.json();
+
+        const LeaguesTableBody = document.getElementById('LeaguesTableBody');
+        LeaguesTableBody.innerHTML = '';
+        leagues.forEach((league, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${league.league_id}</td>
+                <td>${league.name}</td>
+                <td>${league.matches_played}</td>
+            `;
+            LeaguesTableBody.appendChild(row);
         });
     } catch (error) {
         console.error('Error fetching user data:', error);
