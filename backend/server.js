@@ -78,19 +78,18 @@ const authenticate = (req, res, next) => {
     // logic needs to be implemneted here for router logic
   });
 
-// user models Schema
-  // app.post('/register', async (req, res) => {
-  //   try {
-  //     const { username, email, password } = req.body;
-  //     const hashedPassword = await bcrypt.hash(password, 10);
-  //     const newUser = new User({ username, email, password: hashedPassword });
-  //     await newUser.save();
-  //     res.status(201).json({ message: 'User registered successfully' });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ error: 'Internal Server Error' });
-  //   }
-  // });
+  app.post('/register', async (req, res) => {
+    try {
+      const { username, email, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({ username, email, password: hashedPassword });
+      await newUser.save();
+      res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
   
   app.post('/login', async (req, res) => {
     try {
@@ -212,11 +211,11 @@ app.get('/player/:id', (req, res) => {
 
 app.get('/search-players/:name', (req, res) => {
   const playerId = req.params.name.toLowerCase();
-  const sqlQuery = ` SELECT 
-    p.player_id,p.name,p.image_url,p.dob,p.height,p.position,p.rating,p.potential,p.value,p.wage,p.preferred_foot,p.weak_foot,p.skill_moves,p.international_ranking,p.specialities,p.club_id,p.club_name,
-    p.club_league_name,p.club_logo,p.club_rating,p.country,p.team_id,p.country_flag,p.country_rating,p.country_position,p.goals,p.yellow_cards,p.red_cards,p.dribbling,
+  const sql = ` SELECT 
+    p.player_id,p.name,p.image_url,p.dob,p.height,p.position,p.rating,p.potential,p.value,p.wage,p.preferred_foot,p.weak_foot,p.skill_moves,p.international_ranking,p.club_id,p.club_name,
+    p.club_league_name,p.club_logo,p.club_rating,p.country,p.team_id,p.country,p.club_rating,p.country_position,p.goals,p.yellow_cards,p.red_cards,p.dribbling,
     p.long_pass,p.agility, p.standing, p.matches_played, t.name as team_name  FROM 
-    players p INNER JOIN team t ON p.team_id = t.team_id Where LOWER(p.name) LIKE ?;`;
+    players p INNER JOIN team t ON p.team_id = t.team_id Where p.name LIKE ?;`;
 
   db.query(sql, [`%${playerId}%`], (err, result) => {
       if (err) {
@@ -245,26 +244,23 @@ app.get('/search-players/:name', (req, res) => {
         }
     });
 })
-
-// fetching top players
+// for second table
 app.get('/top-players', (req, res) => {
-  const sqlQuery = `
-SELECT 
-    p.player_id,p.name,p.image_url,p.dob,p.height,p.position,p.rating,p.potential,p.value,p.wage,p.preferred_foot,p.weak_foot,p.skill_moves,p.international_ranking,p.specialities,p.club_id,p.club_name,
-    p.club_league_name,p.club_logo,p.club_rating,p.country,p.team_id,p.country_flag,p.country_rating,p.country_position,p.goals,p.yellow_cards,p.red_cards,p.dribbling,
-    p.long_pass,p.agility, p.standing, p.matches_played, t.name as team_name 
-FROM 
-    players p 
-INNER JOIN team t ON p.team_id = t.team_id ORDER BY p.goals DESC LIMIT 10;`;
+    const sqlQuery = `SELECT 
+      p.player_id, p.name, p.image_url, p.dob, p.height, p.position, p.rating, p.potential, p.value, p.wage, p.preferred_foot, p.weak_foot, p.skill_moves, p.international_ranking, p.club_id, p.club_name,
+      p.club_league_name, p.club_logo, p.club_rating, p.country, p.team_id, p.country, p.club_rating, p.position, p.goals, p.yellow_cards, p.red_cards, p.dribbling,
+      p.long_pass, p.agility, p.standing, p.matches_played, t.name as team_name FROM players p INNER JOIN team t ON p.team_id = t.team_id ORDER BY p.goals DESC LIMIT 10;`;
 
   db.query(sqlQuery, (err, result) => {
-      if (err){
-        console.log(err);
-      }else{
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
       res.json(result);
-      }
+    }
   });
-})
+});
+
 
   
 // updatiung players Details by id
@@ -392,16 +388,11 @@ app.get('/league-matches-details', (req, res) => {
     SELECT 
       m.match_id, m.date, m.homeGoals, m.awayGoals, m.attendance, m.referee, 
       home_team.name AS homeTeamName, away_team.name AS awayTeamName 
-    FROM 
-      match_data AS m 
-    JOIN 
-      team AS home_team ON m.homeTeam_id = home_team.team_id 
-    JOIN 
-      team AS away_team ON m.awayTeam_id = away_team.team_id 
-    WHERE 
-      m.league_id = ? 
-    ORDER BY 
-      m.match_id, m.date
+    FROM match_data AS m 
+    JOIN team AS home_team ON m.homeTeam_id = home_team.team_id 
+    JOIN team AS away_team ON m.awayTeam_id = away_team.team_id 
+    WHERE m.league_id = ? 
+    ORDER BY m.match_id, m.date
   `;
 
   db.query(sqlQuery, [leagueID], (err, result) => {
@@ -439,10 +430,10 @@ app.get('/all-matches-details', (req, res) => {
 app.get('/user-data', (req, res) => {
   const userId = req.query.userId; // Assuming userId is passed as a query parameter
 
-  const sql = `SELECT u.user_id, u.name, u.email, u.username, u.picture, 
+  const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
                       u.goals, u.assists, u.position 
                FROM users AS u 
-               WHERE u.user_id = ?`;
+               WHERE u.id = ?`;
 
   db.query(sql, [userId], (err, result) => {
       if (err) {
@@ -455,6 +446,112 @@ app.get('/user-data', (req, res) => {
       }
   });
 });
+
+// Player Statistics Details ------------------->
+
+app.get('/top-players-by-goals', (req, res) => {
+  const sqlQuery = `SELECT 
+    p.player_id, p.name, p.image_url, p.dob, p.height, p.position, p.rating, p.potential, p.value, p.wage, p.preferred_foot, p.weak_foot, p.skill_moves, p.international_ranking, p.club_id, p.club_name,
+    p.club_league_name, p.club_logo, p.club_rating, p.country, p.team_id, p.country, p.club_rating, p.position, p.goals, p.yellow_cards, p.red_cards, p.dribbling,
+    p.long_pass, p.agility, p.standing, p.matches_played, t.name as team_name FROM players p INNER JOIN team t ON p.team_id = t.team_id ORDER BY p.goals DESC LIMIT 10;`;
+
+db.query(sqlQuery, (err, result) => {
+  if (err) {
+    console.error('Error executing query:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  } else {
+    res.json(result);
+  }
+});
+});
+
+app.get('/top-players-by-value', (req, res) => {
+  const sqlQuery = `SELECT 
+    p.player_id, p.name, p.image_url, p.dob, p.height, p.position, p.rating, p.potential, p.value, p.wage, p.preferred_foot, p.weak_foot, p.skill_moves, p.international_ranking, p.club_id, p.club_name,
+    p.club_league_name, p.club_logo, p.club_rating, p.country, p.team_id, p.country, p.club_rating, p.position, p.goals, p.yellow_cards, p.red_cards, p.dribbling,
+    p.long_pass, p.agility, p.standing, p.matches_played, t.name as team_name FROM players p INNER JOIN team t ON p.team_id = t.team_id ORDER BY p.value DESC LIMIT 10;`;
+
+db.query(sqlQuery, (err, result) => {
+  if (err) {
+    console.error('Error executing query:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  } else {
+    res.json(result);
+  }
+});
+});
+
+app.get('/top-players-by-skills', (req, res) => {
+  const sqlQuery = `
+    SELECT 
+        player_id,name,rating,potential,dribbling,long_pass,agility,goals,matches_played,standing,
+        (rating * 0.3 + 
+         potential * 0.2 + 
+         dribbling * 0.1 + 
+         long_pass * 0.1 + 
+         agility * 0.1 + 
+         goals * 0.1 + 
+         matches_played * 0.05 + 
+         standing * 0.05) AS playerPerformance
+    FROM 
+        players
+    ORDER BY 
+        playerPerformance DESC
+    LIMIT 10;
+  `;
+
+  db.query(sqlQuery, (err, result) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json(result);
+    }
+  });
+});
+
+// player stats queries ends here --------------------------------------->
+
+
+// users queries starts from here --------------------------------------->
+
+app.get('/users', (req, res) => {
+  const sqlQuery = 'SELECT * FROM users';
+  db.query(sqlQuery, (err, result) => {
+      if (err){
+        console.log(err);
+      }else{
+      res.json(result);
+      }
+  });
+})
+
+
+app.get('/users-leaderboard', (req, res) => {
+  const sqlQuery = 'SELECT * FROM users order by goals desc';
+  db.query(sqlQuery, (err, result) => {
+      if (err){
+        console.log(err);
+      }else{
+      res.json(result);
+      }
+  });
+})
+
+// league queries start from here -------------------------------->
+app.get('/leagues', (req, res) => {
+  const sqlQuery = 'SELECT * FROM leagues';
+  db.query(sqlQuery, (err, result) => {
+      if (err){
+        console.log(err);
+      }else{
+      res.json(result);
+      }
+  });
+})
+
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -482,14 +579,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.use(express.urlencoded({ extended: true })); 
 
-app.post('/register', upload.single('picture'), (req, res) => {
+app.post('/signup', upload.single('picture'), (req, res) => {
   try {
     const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
 
     if (!password) {
       return res.status(400).json({ success: false, message: 'Password is required' });
     }
-
     const picture = req.file ? req.file.filename : null;
     const hashedPassword = bcrypt.hashSync(password, 10);
 

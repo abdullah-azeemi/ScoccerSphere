@@ -11,7 +11,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles.css">
-    <title>Soccer Sphere | User's Leaderboard</title>
+    <title>Soccer Sphere | Leagues</title>
 </head>
 <body>
     <div class="bgL">
@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
                     <a class="nav-link" href="index.html"><i class="fa fa-home"></i> Home</a>
-                    <a class="nav-link" href="competition.html"><i class="fa fa-trophy"></i> Leagues & Competitions</a>
+                    <a class="nav-link" href="leagues.html"><i class="fa fa-trophy"></i> Leagues & Competitions</a>
                     <a class="nav-link" href="matches.html"><i class="fa fa-soccer-ball-o"></i> Matches</a>
                     <a class="nav-link" href="login_signup.html"><i class="fa fa-user"></i> Login & Sign Up</a>
     
@@ -44,20 +44,17 @@
     </div>
 
      <!-- Leaderboard -->
-     <div class="container leaderboard" id="leaderboard">
-        <h2 class="text-center">User Leaderboard</h2>
-        <div class="ribbon"></div>
+     <div class="container leaderboard">
+        <h2 class="text-center">Leagues</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Rank</th>
-                    <th>User</th>
-                    <th>Goals</th>
-                    <th>Assists</th>
-                    <th>Strike Rate</th>
+                    <th>League ID</th>
+                    <th>Name</th>
+                    <th>Matches Played</th>
                 </tr>
             </thead>
-            <tbody id="leaderboardTableBody">
+            <tbody id="LeaguesTableBody">
                 <!-- Leaderboard data will be dynamically inserted here -->
             </tbody>
         </table>
