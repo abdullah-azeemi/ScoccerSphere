@@ -659,4 +659,37 @@ INSERT INTO matches (date, homeGoals, awayGoals, homeTeam_id, awayTeam_id, leagu
 ('2014-06-26', NULL, NULL, 47000, 'Saad Mane', (SELECT team_id FROM teams WHERE name = 'Portugal'), (SELECT team_id FROM teams WHERE name = 'Ghana'), 5),
 ('2014-06-26', NULL, NULL, 46000, 'Ali Lemghaifry', (SELECT team_id FROM teams WHERE name = 'Korea Republic'), (SELECT team_id FROM teams WHERE name = 'Belgium'), 5),
 ('2014-06-26', NULL, NULL, 45000, 'Paweł Gil', (SELECT team_id FROM teams WHERE name = 'Algeria'), (SELECT team_id FROM teams WHERE name = 'Russia'), 5);
+-- Brazil is already in the list, so it's skipped
+-- Mexico is already in the list, so it's skipped
+-- Croatia is already in the list, so it's skipped
+-- Cameroon is already in the list, so it's skipped
+-- Netherlands is already in the list, so it's skipped
+-- Chile is already in the list, so it's skipped
+-- Spain is already in the list, so it's skipped
+-- Australia is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Colombia', 'FIFA 14', 9, 2, 3, 0, 0, 9, 5);
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Greece', 'FIFA 14', 2, 4, 1, 1, 1, 4, 5);
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Côte d\'Ivoire', 'FIFA 14', 4, 5, 1, 2, 0, 3, 5);
+-- Japan is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Costa Rica', 'FIFA 14', 4, 1, 2, 0, 1, 7, 5);
+-- Uruguay is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Italy', 'FIFA 14', 2, 3, 1, 2, 0, 3, 5);
+-- England is already in the list, so it's skipped
+-- France is already in the list, so it's skipped
+-- Switzerland is already in the list, so it's skipped
+-- Ecuador is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Honduras', 'FIFA 14', 1, 8, 0, 3, 0, 0, 5);
+-- Argentina is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Nigeria', 'FIFA 14', 3, 3, 1, 1, 1, 4, 5);
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Bosnia-Herzegovina', 'FIFA 14', 4, 4, 1, 2, 0, 3, 5);
+-- Iran is already in the list, so it's skipped
+-- Germany is already in the list, so it's skipped
+-- USA is already in the list, so it's skipped
+-- Ghana is already in the list, so it's skipped
+-- Portugal is already in the list, so it's skipped
+-- Belgium is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Algeria', 'FIFA 14', 5, 4, 1, 1, 0, 3, 5);
+-- Russia is already in the list, so it's skipped
+INSERT INTO teams (name, league, goalsFor, goalsAgainst, wins, losses, draws, points, league_id) VALUES ('Korea Republic', 'FIFA 14', 3, 5, 0, 1, 1, 1, 5);
+
 
