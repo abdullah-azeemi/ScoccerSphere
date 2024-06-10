@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const e = require('express');
 
 require('dotenv').config();
 
@@ -497,25 +498,45 @@ app.get('/user-data', (req, res) => {
   });
 });
 
+
 app.get('/userSidebar', (req, res) => {
   const userId = req.query.userId; // Assuming userId is passed as a query parameter
 
-  const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
-                      u.goals, u.assists, u.position 
-               FROM users AS u 
-               WHERE u.email = ?`;
+  if (userEmail) {
+    const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
+                u.goals, u.assists, u.position 
+                FROM users u 
+                WHERE u.email = '${userEmail}'`;
 
-  db.query(sql, [userId], (err, result) => {
+    db.query(sql, (err, result) => {
       if (err) {
-          console.error('Error executing MySQL query:', err);
-          return res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error executing MySQL query:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
       } else if (result.length === 0) {
-          res.status(404).json({ error: 'User not found' });
+        res.status(404).json({ error: 'User not found' });
       } else {
-          res.json(result[0]);
+        res.json(result[0]);
       }
-  });
+    });
+  } else {
+    const sql1 = `SELECT u.id, u.name, u.email, u.username, u.picture, 
+                        u.goals, u.assists, u.position 
+                  FROM users u 
+                  LIMIT 1`;
+
+    db.query(sql1, (err, result) => {
+      if (err) {
+        console.error('Error executing MySQL query:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      } else if (result.length === 0) {
+        res.status(404).json({ error: 'User not found' });
+      } else {
+        res.json(result[0]);
+      }
+    });
+  }
 });
+
 
 // league queries start from here -------------------------------->
 app.get('/leagues', (req, res) => {
@@ -566,7 +587,7 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/register', upload.single('picture'), (req, res) => {
   try {
     const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
-
+    //userEmail = email;
     // Helper function to check if all required fields are empty
     const areAllFieldsEmpty = (...fields) => fields.every(field => !field || field.trim() === '');
 
@@ -599,7 +620,7 @@ app.post('/register', upload.single('picture'), (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const { email, password } = req.body;
+  const { email, password} = req.body;
   userEmail = email;
   if (!email || !password) {
     return res.status(400).json({ success: false, message: 'Email and password are required' });
