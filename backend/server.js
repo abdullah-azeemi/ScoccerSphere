@@ -13,6 +13,11 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT || 5000;
 
+let userEmail = null;
+app.get('/userEmail', (req, res) => {
+  res.json({ value: userEmail });
+})
+
 const authenticateJWT = (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -37,8 +42,6 @@ app.get('/api/protected', (req, res) => {
   	res.json({message : 'protected data accessed',
   user : req.user});
 });
-
-
 
 
 // MySQL connection setup
@@ -383,27 +386,6 @@ app.get('/all-matches-details', (req, res) => {
   });
 });
 
-
-app.get('/user-data', (req, res) => {
-  const userId = req.query.userId; // Assuming userId is passed as a query parameter
-
-  const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
-                      u.goals, u.assists, u.position 
-               FROM users AS u 
-               WHERE u.id = ?`;
-
-  db.query(sql, [userId], (err, result) => {
-      if (err) {
-          console.error('Error executing MySQL query:', err);
-          return res.status(500).json({ error: 'Internal Server Error' });
-      } else if (result.length === 0) {
-          res.status(404).json({ error: 'User not found' });
-      } else {
-          res.json(result[0]);
-      }
-  });
-});
-
 // Player Statistics Details ------------------->
 
 app.get('/top-players-by-goals', (req, res) => {
@@ -495,6 +477,46 @@ app.get('/users-leaderboard', (req, res) => {
   });
 })
 
+app.get('/user-data', (req, res) => {
+  const userId = req.query.userId; // Assuming userId is passed as a query parameter
+
+  const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
+                      u.goals, u.assists, u.position 
+               FROM users AS u 
+               WHERE u.id = ?`;
+
+  db.query(sql, [userId], (err, result) => {
+      if (err) {
+          console.error('Error executing MySQL query:', err);
+          return res.status(500).json({ error: 'Internal Server Error' });
+      } else if (result.length === 0) {
+          res.status(404).json({ error: 'User not found' });
+      } else {
+          res.json(result[0]);
+      }
+  });
+});
+
+app.get('/userSidebar', (req, res) => {
+  const userId = req.query.userId; // Assuming userId is passed as a query parameter
+
+  const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
+                      u.goals, u.assists, u.position 
+               FROM users AS u 
+               WHERE u.email = ?`;
+
+  db.query(sql, [userId], (err, result) => {
+      if (err) {
+          console.error('Error executing MySQL query:', err);
+          return res.status(500).json({ error: 'Internal Server Error' });
+      } else if (result.length === 0) {
+          res.status(404).json({ error: 'User not found' });
+      } else {
+          res.json(result[0]);
+      }
+  });
+});
+
 // league queries start from here -------------------------------->
 app.get('/leagues', (req, res) => {
   const sqlQuery = 'SELECT * FROM leagues';
@@ -527,12 +549,17 @@ app.use((err, req, res, next) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Ensure this directory exists
+    cb(null, 'uploads/'); 
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    const username = req.body.username; 
+    const originalname = file.originalname;
+    const fileExtension = originalname.split('.').pop(); 
+    const filename = req.body.name + '.' + fileExtension; 
+    cb(null, filename);
   }
 });
+
 const upload = multer({ storage: storage });
 app.use(express.urlencoded({ extended: true })); 
 
@@ -570,9 +597,10 @@ app.post('/register', upload.single('picture'), (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
+
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-
+  userEmail = email;
   if (!email || !password) {
     return res.status(400).json({ success: false, message: 'Email and password are required' });
   }
