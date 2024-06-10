@@ -48,28 +48,55 @@
                 </div>
             </div>
             <div class="forms">
-                <div class="form-content">
-                    <!-- Login Form -->
-                    <div class="login-form">
-                        <div class="title">Login</div>
-                        <form action="#">
-                            <div class="input-boxes">
-                                <div class="input-box">
-                                    <i class="fa fa-envelope"></i>
-                                    <input type="text" placeholder="Enter your email" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-lock"></i>
-                                    <input type="password" placeholder="Enter your password" required>
-                                </div>
-                                <div class="text"><a href="#">Forgot password?</a></div>
-                                <div class="button input-box">
-                                    <input type="submit" value="Submit">
-                                </div>
-                                <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
-                            </div>
-                        </form>
+              <div class="form-content">
+                  <!-- Login Form -->
+                <div class="login-form">
+                    <div class="title">Login</div>
+                    <form id="loginForm">
+                    <div class="input-boxes">
+                        <div class="input-box">
+                        <i class="fa fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="input-box">
+                        <i class="fa fa-lock"></i>
+                        <input type="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="text"><a href="#">Forgot password?</a></div>
+                        <div class="button input-box">
+                        <input type="submit" value="Submit">
+                        </div>
+                        <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
                     </div>
+                    </form>
+                </div>
+                
+                <script>
+                    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+                    event.preventDefault();
+                    try {
+                        const formData = new FormData(this);
+                        const response = await fetch('http://localhost:5000/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json' // Add this line
+                            },
+                            body: JSON.stringify(Object.fromEntries(formData)) // Convert FormData to JSON object
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            alert('Login successful!');
+                            // Redirect to another page or perform other actions
+                        } else {
+                            alert('Login failed: ' + data.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+
+                </script>
+                
                     <!-- Signup Form -->
                     <div class="signup-form">
                         <div class="title">Signup</div>
@@ -172,25 +199,6 @@
     <script src="app.js"></script>
     <script>
         // JavaScript to handle form navigation
-        document.getElementById("loginForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
-        try {
-            const formData = new FormData(this);
-            const response = await fetch('http://localhost:5000/login', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            if (data.success) {
-                alert('Login successful!');
-                openSidebar();
-            } else {
-                alert('Login failed: ' + data.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
         document.getElementById("signupForm").addEventListener("submit", async function(event) {
         event.preventDefault();
         try {
@@ -275,3 +283,6 @@
     </script>
 </body>
 </html>
+
+
+
