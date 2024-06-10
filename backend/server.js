@@ -91,27 +91,27 @@ const authenticate = (req, res, next) => {
   //   }
   // });
   
-  app.post('/login', async (req, res) => {
-    try {
-      const { username, password } = req.body;
-      // Finding username
-      const user = await User.findOne({ username });
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid username or password' });
-      }
-      // Validate password
-      const isValidPassword = await bcrypt.compare(password, user.password);
-      if (!isValidPassword) {
-        return res.status(401).json({ error: 'Invalid username or password' });
-      }
-      // user authenticated
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
-      res.json({ token });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  // app.post('/login', async (req, res) => {
+  //   try {
+  //     const { username, password } = req.body;
+  //     // Finding username
+  //     const user = await User.findOne({ username });
+  //     if (!user) {
+  //       return res.status(401).json({ error: 'Invalid username or password' });
+  //     }
+  //     // Validate password
+  //     const isValidPassword = await bcrypt.compare(password, user.password);
+  //     if (!isValidPassword) {
+  //       return res.status(401).json({ error: 'Invalid username or password' });
+  //     }
+  //     // user authenticated
+  //     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+  //     res.json({ token });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
   
 
 
@@ -636,6 +636,38 @@ app.post('/register', upload.single('picture'), (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
+});
+
+// Login Route
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ success: false, message: 'Email and password are required' });
+  }
+
+  const sql = 'SELECT * FROM users WHERE email = ?';
+  db.query(sql, [email], (err, results) => {
+    if (err) {
+      console.error('Error:', err);
+      return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+
+    if (results.length === 0) {
+      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    const user = results[0];
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({ success: true, token });
+  });
 });
 
 // Start server
