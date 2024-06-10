@@ -1,0 +1,127 @@
+Soccer Sphere App Project Report
+ 
+GROUP MEMBERS:
+	 	GROUP NUMBER 11
+1.          Abdullah Musharaf [BSCS 22137]
+2.          Ahmad Imran [BSCS 22007]
+3.          Muhamad Sheraz [BSCS 22139]
+4.          Muhammad Waseem [BSCS 22095]
+ 
+1.          Introduction
+1.1 Project Overview
+The Soccer Sphere App is designed to manage and maintain comprehensive records of soccer players and match data across various leagues. The application serves as a database that facilitates easy access to detailed information about players, teams, matches, and statistics.
+1.2   Objectives
+- To create a user-friendly interface for managing soccer data.
+- To ensure data integrity and consistency across various records.
+- To provide efficient querying and reporting capabilities for users.
+
+2.     Technologies Used
+ 
+2.1 HTML
+HTML (Hypertext Markup Language) is used for structuring the content on the web pages. It forms the backbone of our app's user interface.
+ 
+2.2 CSS
+CSS (Cascading Style Sheets) is used to style the HTML elements, providing a visually appealing and responsive design. It helps in making the application accessible across various devices.
+ 
+2.3 JavaScript
+JavaScript is employed to add interactivity to the web pages. It is used for DOM manipulation, form validation, asynchronous requests, and handling user events.
+2.4 AWS Technology
+AWS (Amazon Web Services) is utilized for various backend and infrastructure-related functionalities. Key AWS services used include:
+2.4.1 Amazon RDS (Relational Database Service)
+Amazon RDS is used to manage the MySQL database that stores player, match, team, and league data. RDS provides scalable and reliable database management with automated backups, software patching, and performance monitoring.
+
+ 
+3.     System Design
+3.1 Database Schema
+The database schema is designed to handle various entities related to soccer, including players, teams, matches, and leagues. Key tables include:
+- Players:   	 Stores player details like name, age, nationality, position, and statistics.
+- Teams:     	 Stores team information such as team name, coach, and home stadium.
+- Matches:  	 Records match details including date, teams involved, scores, and location.
+- Leagues:  	 Contains league information like league name, country, and season.
+ 	3.2 Entity-Relationship Diagram (ERD)
+The ERD illustrates the relationships between different entities in the database. For instance, a match involves two teams, and each team consists of multiple players.
+ 
+4. Implementation
+4.1 Frontend Development
+The frontend is developed using HTML, CSS, and JavaScript. Key features include:
+- Player Profiles:   	Detailed profiles for each player with statistics and historical data.
+- Match Details:    	Comprehensive data on matches including scores, dates, and participating teams.
+-League Standings:   Current standings and statistics for various leagues.
+ 	4.1.1 HTML
+HTML is used to create the structure of the web pages, including forms, tables, and navigation menus.
+ 	4.1.2 CSS
+CSS styles the HTML elements, ensuring a consistent look and feel. Responsive design techniques are used to make the app accessible on mobile devices.
+4.1.3 JavaScript
+JavaScript handles user interactions, such as form submissions, data validations, and asynchronous data fetching using AJAX.
+ 
+4.2 Backend Development
+The backend is developed using Node.js and Express, along with several key libraries to handle various functionalities. The server runs on port 5000.
+4.2.1 Server Setup
+The server is created using Node.js and the Express framework. It listens on port 5000 for incoming requests.
+4.2.2 Libraries and Middleware
+body-parser: Used to parse incoming request bodies in a middleware before your handlers, available under the req.body property.
+bcrypt: A library to help hash passwords. It is used for secure password storage and authentication.
+jsonwebtoken (jwt): Used to generate and verify JSON Web Tokens for user authentication.
+cors: Middleware to enable Cross-Origin Resource Sharing (CORS), allowing the frontend to communicate with the backend from different origins.
+user: Custom middleware for handling user-related operations, such as registration, login, and profile management.
+auth: Custom middleware for handling authentication, ensuring that routes are protected and accessible only to authenticated users.
+4.3 Security
+4.3.1 Password Hashing
+Passwords are hashed using bcrypt before storing them in the database, ensuring that user credentials are stored securely.
+4.3.2 Authentication
+Authentication is managed using JSON Web Tokens (JWT). Tokens are generated upon successful login and are required to access protected routes.
+4.3.3 CORS
+CORS is enabled using the cors library, allowing the frontend application to make requests to the backend server from a different origi
+
+ 
+5. Features
+ 	5.1 Player Management
+·       Add, update, and delete player records.
+·       View detailed player statistics and history.
+ 
+5.2 Match Management
+·       Record match details including scores, dates, and teams.
+·       View historical match data and upcoming fixtures.
+ 
+5.3 League Management
+·       Manage league information and standings.
+·       Generate reports on league performance and statistics.
+
+6. Testing and Debugging
+ 
+6.1 Testing Methodologies
+- Unit Testing: Ensuring individual components work as expected.
+- Integration Testing: Verifying that different parts of the application work together.
+- User Acceptance Testing (UAT): Conducting tests with potential users to ensure the app meets their needs.
+ 
+6.2 Debugging Tools
+- Browser developer tools for inspecting HTML, CSS, and JavaScript.
+- Console logs for tracing and debugging JavaScript code.
+ 
+7. Conclusion
+ 
+7.1 Achievements
+- Successfully developed a functional soccer data management application.
+- Created an intuitive and responsive user interface.
+ 
+7.2 Future Enhancements
+- Integrate a backend database for persistent data storage.
+- Implement user authentication and authorization.
+- Add more detailed analytics and reporting features.
+ 
+
+8. Appendices
+8.2 User Guides
+
+Open the Soccer Sphere App: Navigate to the app's URL in your web browser.
+Login Page: Enter your username and password in the login fields.
+Submit: Click the "Login" button to access your account. If you don't have an account, click on "Sign Up" to create one.
+Home: This is the main page where you can see an overview of recent matches and league standings.
+Matches: The "Matches" tab provides information on past and upcoming matches. You can add new match records and update scores.
+Leagues: Manage league details by clicking on the "Leagues" tab. This section shows current standings and league statistics. 
+
+ 
+ 
+9.Work Distribution
+We also divided our groups in further two groups in start there is a group of Abdullah 22137 and Ahmad 22007 which are working on backend and the other group of Waseem 22095 and Sheraz 220139 were working on front end and then the group changed and Ahmad and Waseem worked together in gathering and extracting data.and all of us finalizes the projects and debug it and now its good to go.
+
