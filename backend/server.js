@@ -72,6 +72,47 @@ const authenticate = (req, res, next) => {
     next();
   };
 
+  app.get('/admin/dashboard', authenticate, authorize, (req, res) => {
+    // logic needs to be implemneted here for router logic
+  });
+
+  // app.post('/register', async (req, res) => {
+  //   try {
+  //     const { username, email, password } = req.body;
+  //     const hashedPassword = await bcrypt.hash(password, 10);
+  //     const newUser = new User({ username, email, password: hashedPassword });
+  //     await newUser.save();
+  //     res.status(201).json({ message: 'User registered successfully' });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
+  
+  app.post('/login', async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      // Finding username
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid username or password' });
+      }
+      // Validate password
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return res.status(401).json({ error: 'Invalid username or password' });
+      }
+      // user authenticated
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+      res.json({ token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+
+
 // defining routes for creating a New player
 app.post('/player', (req, res) => {
     const { name, position } = req.body; // Remove goals and assists
@@ -570,34 +611,7 @@ app.post('/register', upload.single('picture'), (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ success: false, message: 'Email and password are required' });
-  }
-
-  const sql = 'SELECT * FROM users WHERE email = ?';
-  db.query(sql, [email], (err, results) => {
-    if (err) {
-      console.error('Error:', err);
-      return res.status(500).json({ success: false, message: 'Internal server error' });
-    }
-
-    if (results.length === 0) {
-      return res.status(400).json({ success: false, message: 'Invalid email or password' });
-    }
-
-    const user = results[0];
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(400).json({ success: false, message: 'Invalid email or password' });
-    }
-
-    res.json({ success: true, message: 'Login successful', user });
-  });
-});
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
