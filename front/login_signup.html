@@ -73,74 +73,75 @@
                     <!-- Signup Form -->
                     <div class="signup-form">
                         <div class="title">Signup</div>
-                        <form id="signupForm">
+                        <form id="signupForm" enctype="multipart/form-data">
                             <div class="tab">
-                                <div class="input-box">
-                                    <i class="fa fa-user"></i>
-                                    <input type="text" placeholder="Enter your name" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-calendar"></i>
-                                    <input type="number" placeholder="Enter your age" required>
-                                </div>
-                                <div  class="input-box">
-                                    <i class="fa fa-venus-mars"></i>
-                                    <select  id="gender" required>
-                                        <option value="">Select gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-globe"></i>
-                                    <input type="text" placeholder="Enter your country" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-upload"></i>
-                                    <input type="file" id="pictureUpload" accept="image/*" required>
-                                </div>
+                              <div class="input-box">
+                                <i class="fa fa-user"></i>
+                                <input type="text" name="name" placeholder="Enter your name" required>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-calendar"></i>
+                                <input type="number" name="age" placeholder="Enter your age" required>
+                              </div>
+                              <div  class="input-box">
+                                <i class="fa fa-venus-mars"></i>
+                                <select name="gender" id="gender" required>
+                                  <option value="">Select gender</option>
+                                  <option value="male">Male</option>
+                                  <option value="female">Female</option>
+                                  <option value="other">Other</option>
+                                </select>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-globe"></i>
+                                <input type="text" name="country" placeholder="Enter your country" required>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-upload"></i>
+                                <input type="file" name="picture" id="pictureUpload" accept="image/*" required>
+                              </div>
                             </div>
                             <div class="tab">
-                                <div class="input-box">
-                                    <i class="fa fa-futbol-o"></i>
-                                    <input type="number" placeholder="Enter your goals" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-handshake-o"></i>
-                                    <input id="asi" type="number" placeholder="Enter your assists" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-futbol-o"></i>
-                                    <input type="text" placeholder="Enter your position" required>
-                                </div>
+                              <div class="input-box">
+                                <i class="fa fa-futbol-o"></i>
+                                <input type="number" name="goals" placeholder="Enter your goals" required>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-handshake-o"></i>
+                                <input id="asi" name="assists" type="number" placeholder="Enter your assists" required>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-futbol-o"></i>
+                                <input type="text" name="position" placeholder="Enter your position" required>
+                              </div>
                             </div>
                             <div class="tab">
-                                <div class="input-box">
-                                    <i class="fa fa-envelope"></i>
-                                    <input type="email" placeholder="Enter your email" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-user"></i>
-                                    <input type="text" placeholder="Enter your username" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fa fa-lock"></i>
-                                    <input type="password" placeholder="Enter your password" required>
-                                </div>
+                              <div class="input-box">
+                                <i class="fa fa-envelope"></i>
+                                <input type="email" name="email" placeholder="Enter your email" required>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-user"></i>
+                                <input type="text" name="username" placeholder="Enter your username" required>
+                              </div>
+                              <div class="input-box">
+                                <i class="fa fa-lock"></i>
+                                <input type="password" name="password" placeholder="Enter your password" required>
+                              </div>
                             </div>
                             <div style="text-align:center;margin-top:40px;">
-                                <span class="step"></span>
-                                <span class="step"></span>
-                                <span class="step"></span>
+                              <span class="step"></span>
+                              <span class="step"></span>
+                              <span class="step"></span>
                             </div>
                             <div style="overflow:auto;">
-                                <div style="float:right;">
-                                    <button class="button" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                                    <button class="button" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                                </div>
+                              <div style="float:right;">
+                                <button class="button" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                                <button class="button" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                              </div>
                             </div>
-                        </form>                
+                          </form>
+                                          
                         <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
                     </div>
                 </div>
@@ -171,6 +172,25 @@
     <script src="app.js"></script>
     <script>
         // JavaScript to handle form navigation
+        document.getElementById("signupForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        try {
+            const formData = new FormData(this);
+            const response = await fetch('http://localhost:5000/register', {
+            method: 'POST',
+            body: formData
+            });
+            const data = await response.json();
+            if (data.success) {
+            alert('Signup successful!');
+            } else {
+            alert('Signup failed: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        });
+
         let currentTab = 0;
         showTab(currentTab);
 
@@ -196,7 +216,7 @@
             tabs[currentTab].style.display = "none";
             currentTab = currentTab + n;
             if (currentTab >= tabs.length) {
-                document.getElementById("signupForm").submit();
+                document.getElementById("signupForm").dispatchEvent(new Event('submit'))
                 return false;
             }
             showTab(currentTab);

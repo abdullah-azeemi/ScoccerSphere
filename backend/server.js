@@ -78,18 +78,18 @@ const authenticate = (req, res, next) => {
     // logic needs to be implemneted here for router logic
   });
 
-  app.post('/register', async (req, res) => {
-    try {
-      const { username, email, password } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({ username, email, password: hashedPassword });
-      await newUser.save();
-      res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+  // app.post('/register', async (req, res) => {
+  //   try {
+  //     const { username, email, password } = req.body;
+  //     const hashedPassword = await bcrypt.hash(password, 10);
+  //     const newUser = new User({ username, email, password: hashedPassword });
+  //     await newUser.save();
+  //     res.status(201).json({ message: 'User registered successfully' });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // });
   
   app.post('/login', async (req, res) => {
     try {
@@ -579,13 +579,47 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.use(express.urlencoded({ extended: true })); 
 
-app.post('/signup', upload.single('picture'), (req, res) => {
+// app.post('/signup', upload.single('picture'), (req, res) => {
+//   try {
+//     const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
+
+//     if (!password) {
+//       return res.status(400).json({ success: false, message: 'Password is required' });
+//     }
+//     const picture = req.file ? req.file.filename : null;
+//     const hashedPassword = bcrypt.hashSync(password, 10);
+
+//     const sql = `INSERT INTO users (name, age, gender, country, picture, goals, assists, position, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//     db.query(sql, [name, age, gender, country, picture, goals, assists, position, email, username, hashedPassword], (err, result) => {
+//       if (err) {
+//         console.error('Error:', err);
+//         return res.status(500).json({ success: false, message: 'Internal server error' });
+//       }
+//       res.json({ success: true, message: 'User registered successfully' });
+//     });
+//   } catch (error) {
+//     console.error('Error:', error);
+//     res.status(500).json({ success: false, message: 'Internal server error' });
+//   }
+// });
+app.post('/register', upload.single('picture'), (req, res) => {
   try {
     const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
 
+    // Helper function to check if all required fields are empty
+    const areAllFieldsEmpty = (...fields) => fields.every(field => !field || field.trim() === '');
+
+    // Check if all required fields are empty
+    if (areAllFieldsEmpty(name, age, gender, country, goals, assists, position, email, username, password)) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+
+    // Check if password is provided
     if (!password) {
       return res.status(400).json({ success: false, message: 'Password is required' });
     }
+
     const picture = req.file ? req.file.filename : null;
     const hashedPassword = bcrypt.hashSync(password, 10);
 

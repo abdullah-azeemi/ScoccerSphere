@@ -39,22 +39,22 @@ function closeSidebar() {
     }
 }
 
-async function fetchUserData() {
-    try {
-        const response = await fetch('http://localhost:5000/users');
-        const data = await response.json();
-        const doc = document.getElementById('userSidebar');
-        doc.getElementById('userPicture').src = data.picture;
-        doc.getElementById('userName').innerText = data.name;
-        doc.getElementById('userEmail').innerText = data.email;
-        doc.getElementById('userUsername').innerText = data.username;
-        doc.getElementById('userGoals').innerText = `Goals: ${data.goals}`;
-        doc.getElementById('userAssists').innerText = `Assists: ${data.assists}`;
-        doc.getElementById('userPosition').innerText = `Position: ${data.position}`;
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-    }
-}
+// async function fetchUserData() {
+//     try {
+//         const response = await fetch('http://localhost:5000/users');
+//         const data = await response.json();
+//         const doc = document.getElementById('userSidebar');
+//         doc.getElementById('userPicture').src = data.picture;
+//         doc.getElementById('userName').innerText = data.name;
+//         doc.getElementById('userEmail').innerText = data.email;
+//         doc.getElementById('userUsername').innerText = data.username;
+//         doc.getElementById('userGoals').innerText = `Goals: ${data.goals}`;
+//         doc.getElementById('userAssists').innerText = `Assists: ${data.assists}`;
+//         doc.getElementById('userPosition').innerText = `Position: ${data.position}`;
+//     } catch (error) {
+//         console.error('Error fetching user data:', error);
+//     }
+// }
 
 async function fetchLeaguesData() {
     try {
@@ -334,24 +334,25 @@ async function showPlayerDetails(player) {
 }
 
 // Forms
-document.getElementById("signupForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
-    try {
-        const formData = new FormData(this);
-        const response = await fetch('http://localhost:5000/api/signup', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json();
-        if (data.success) {
-            alert('Signup successful!');
-        } else {
-            alert('Signup failed: ' + data.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
+// document.getElementById("signupForm").addEventListener("submit", async function(event) {
+//     event.preventDefault();
+//     try {
+//         alert("in dom");
+//         const formData = new FormData(this);
+//         const response = await fetch('http://localhost:5000/register', {
+//             method: 'POST',
+//             body: formData
+//         });
+//         const data = await response.json();
+//         if (data.success) {
+//             alert('Signup successful!');
+//         } else {
+//             alert('Signup failed: ' + data.message);
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//     }
+// });
 
 function toggleForms() {
     try {
@@ -584,7 +585,7 @@ async function showMatchesDetails(match) {
 // Leaderboard Page
 async function fetchUserData() {
     try {
-        const response = await fetch('/api/users');
+        const response = await fetch('/users');
         const users = await response.json();
 
         // Calculate the strike rate and sort the users
