@@ -39,23 +39,6 @@ function closeSidebar() {
     }
 }
 
-// async function fetchUserData() {
-//     try {
-//         const response = await fetch('http://localhost:5000/users');
-//         const data = await response.json();
-//         const doc = document.getElementById('userSidebar');
-//         doc.getElementById('userPicture').src = data.picture;
-//         doc.getElementById('userName').innerText = data.name;
-//         doc.getElementById('userEmail').innerText = data.email;
-//         doc.getElementById('userUsername').innerText = data.username;
-//         doc.getElementById('userGoals').innerText = `Goals: ${data.goals}`;
-//         doc.getElementById('userAssists').innerText = `Assists: ${data.assists}`;
-//         doc.getElementById('userPosition').innerText = `Position: ${data.position}`;
-//     } catch (error) {
-//         console.error('Error fetching user data:', error);
-//     }
-// }
-
 async function fetchLeaguesData() {
     try {
         const response = await fetch('http://localhost:5000/leagues');

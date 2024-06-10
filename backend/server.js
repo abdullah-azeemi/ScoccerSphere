@@ -498,12 +498,10 @@ app.get('/user-data', (req, res) => {
 });
 
 app.get('/userSidebar', (req, res) => {
-  const userId = req.query.userId; // Assuming userId is passed as a query parameter
-
   const sql = `SELECT u.id, u.name, u.email, u.username, u.picture, 
                       u.goals, u.assists, u.position 
                FROM users AS u 
-               WHERE u.email = ?`;
+               WHERE u.email = ${userEmail}`;
 
   db.query(sql, [userId], (err, result) => {
       if (err) {
