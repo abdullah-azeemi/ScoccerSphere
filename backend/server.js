@@ -587,9 +587,19 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/register', upload.single('picture'), (req, res) => {
   try {
     const { name, age, gender, country, goals, assists, position, email, username, password } = req.body;
-    const userEmail = email; // Assuming you want to store email for later use
+    //userEmail = email;
+    // Helper function to check if all required fields are empty
+    const areAllFieldsEmpty = (...fields) => fields.every(field => !field || field.trim() === '');
 
-    // Your validation and hashing logic
+    // Check if all required fields are empty
+    if (areAllFieldsEmpty(name, age, gender, country, goals, assists, position, email, username, password)) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+
+    // Check if password is provided
+    if (!password) {
+      return res.status(400).json({ success: false, message: 'Password is required' });
+    }
 
     const picture = req.file ? req.file.filename : null;
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -601,28 +611,14 @@ app.post('/register', upload.single('picture'), (req, res) => {
         console.error('Error:', err);
         return res.status(500).json({ success: false, message: 'Internal server error' });
       }
-      const createUserSql = `CREATE USER '${username}'@'%' IDENTIFIED BY '${password}'`;
-      const grantPermissionsSql = `GRANT SELECT ON Soccer_Stats.* TO '${username}'@'%'`;
-
-      db.query(createUserSql, (err) => {
-        if (err) {
-          console.error('Error creating MySQL user:', err);
-          return res.status(500).json({ success: false, message: 'Internal server error' });
-        }
-        db.query(grantPermissionsSql, (err) => {
-          if (err) {
-            console.error('Error granting permissions:', err);
-            return res.status(500).json({ success: false, message: 'Internal server error' });
-          }
-          res.json({ success: true, message: 'User registered successfully' });
-        });
-      });
+      res.json({ success: true, message: 'User registered successfully' });
     });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
+
 
 
 app.post('/login', (req, res) => {
