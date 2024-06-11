@@ -456,7 +456,7 @@ app.get('/top-players-by-skills', (req, res) => {
 // users queries starts from here --------------------------------------->
 
 app.get('/users', (req, res) => {
-  const sqlQuery = 'SELECT * FROM users';
+  const sqlQuery = 'SELECT * FROM users where id > 1 order by strike_rate DESC';
   db.query(sqlQuery, (err, result) => {
       if (err){
         console.log(err);
@@ -468,7 +468,7 @@ app.get('/users', (req, res) => {
 
 
 app.get('/users-leaderboard', (req, res) => {
-  const sqlQuery = 'SELECT * FROM users order by goals desc';
+  const sqlQuery = 'SELECT * FROM users WHERE id > 1 ORDER BY strike_rate DESC';
   db.query(sqlQuery, (err, result) => {
       if (err){
         console.log(err);
