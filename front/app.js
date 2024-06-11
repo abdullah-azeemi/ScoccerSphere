@@ -335,11 +335,18 @@ async function showPlayerDetails(player) {
                             <p>Matches Played : ${player.matches_played}</p>
                             <p>Preffered Foot: ${player.preferred_foot}</p>
                         </div>
-                        <div style="padding-left: 10px;">
+                        <div style="padding-left: 10px;  border-right: 1px solid #ccc; ">
                             <p>Agility: ${player.agility}</p>
                             <p>Club Name: ${player.club_name}</p>
-                            <p>Dribbling: ${player.dribbling}</p>
+                            <p>Club rating: ${player.club_rating}</p>
                             <p>Team: ${player.team_name}</p>
+                        </div>
+                        <div style="padding-left: 10px;">
+                            <p>Club league Name: ${player.club_league_name}</p>
+                            <p>Long Passes: ${player.long_pass}</p>
+                            <p>Short Passes: ${player.yellow_cards}</p>
+                            <p>Dribbling: ${player.dribbling}</p>
+                            <p>Red Cards: ${player.red_cards}</p>
                         </div>
                     </div>
                 </div>
