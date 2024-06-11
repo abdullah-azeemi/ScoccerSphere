@@ -86,6 +86,7 @@
                         const data = await response.json();
                         if (data.success) {
                             alert('Login successful!');
+                            openSidebar();
                             // Redirect to another page or perform other actions
                         } else {
                             alert('Login failed: ' + data.message);

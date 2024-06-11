@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         await fetchTopPlayers();
         await fetchUsers();
         await fetchLeagues();
+        await fetchUserDataSB();
         toggleDetailsMain('fifa');
         // await loadMatchDetails();
         toggleForms();
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 // Side bar
 function openSidebar() {
     try {
+        fetchUserDataSB();
         document.getElementById("userSidebar").classList.add("open");
     } catch (error) {
         console.error('Error opening sidebar:', error);
@@ -39,22 +41,44 @@ function closeSidebar() {
     }
 }
 
-// async function fetchUserData() {
-//     try {
-//         const response = await fetch('http://localhost:5000/users');
-//         const data = await response.json();
-//         const doc = document.getElementById('userSidebar');
-//         doc.getElementById('userPicture').src = data.picture;
-//         doc.getElementById('userName').innerText = data.name;
-//         doc.getElementById('userEmail').innerText = data.email;
-//         doc.getElementById('userUsername').innerText = data.username;
-//         doc.getElementById('userGoals').innerText = `Goals: ${data.goals}`;
-//         doc.getElementById('userAssists').innerText = `Assists: ${data.assists}`;
-//         doc.getElementById('userPosition').innerText = `Position: ${data.position}`;
-//     } catch (error) {
-//         console.error('Error fetching user data:', error);
-//     }
-// }
+async function fetchUserDataSB() {
+    try {
+        const response = await fetch('http://localhost:5000/userSidebar');
+        const data = await response.json();
+        console.log(data);
+
+        const doc = document.getElementById('userSidebar');
+        console.log(doc);
+
+        doc.querySelector('#userPicture').src = data.picture;
+        doc.querySelector('#userName').innerText = data.name;
+        doc.querySelector('#userEmail').innerText = data.email;
+        doc.querySelector('#userUsername').innerText = data.username;
+        doc.querySelector('#userGoals').innerText = `Goals: ${data.goals}`;
+        doc.querySelector('#userAssists').innerText = `Assists: ${data.assists}`;
+        doc.querySelector('#userPosition').innerText = `Position: ${data.position}`;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+}
+
+
+async function fetchUserData() {
+    try {
+        const response = await fetch('http://localhost:5000/users');
+        const data = await response.json();
+        const doc = document.getElementById('userSidebar');
+        doc.getElementById('userPicture').src = data.picture;
+        doc.getElementById('userName').innerText = data.name;
+        doc.getElementById('userEmail').innerText = data.email;
+        doc.getElementById('userUsername').innerText = data.username;
+        doc.getElementById('userGoals').innerText = `Goals: ${data.goals}`;
+        doc.getElementById('userAssists').innerText = `Assists: ${data.assists}`;
+        doc.getElementById('userPosition').innerText = `Position: ${data.position}`;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+}
 
 async function fetchLeaguesData() {
     try {
@@ -152,7 +176,7 @@ function displayUsers(users, containerId) {
         users.forEach(user => {
             const userRow = document.createElement('tr');
             userRow.innerHTML = `
-                <td>${user.rankLeaderboard}</td>
+                <td><img src="../backend/uploads/${user.picture}" alt="${user.name}" width="50" height="50"></td>
                 <td>${user.name}</td>
                 <td>${user.goals}</td>
                 <td>${user.assists}</td>
@@ -583,59 +607,59 @@ async function showMatchesDetails(match) {
 
 
 // Leaderboard Page
-async function fetchUserData() {
-    try {
-        const response = await fetch('/users');
-        const users = await response.json();
+// async function fetchUserData() {
+//     try {
+//         const response = await fetch('/users-leaderboard');
+//         const users = await response.json();
 
-        // Calculate the strike rate and sort the users
-        users.forEach(user => {
-            user.strikeRate = (user.goals + user.assists) / 2;
-        });
-        users.sort((a, b) => b.strikeRate - a.strikeRate);
+//         // Calculate the strike rate and sort the users
+//         users.forEach(user => {
+//             user.strikeRate = (user.goals + user.assists) / 2;
+//         });
+//         users.sort((a, b) => b.strikeRate - a.strikeRate);
 
-        const leaderboardTableBody = document.getElementById('leaderboardTableBody');
-        leaderboardTableBody.innerHTML = '';
+//         const leaderboardTableBody = document.getElementById('leaderboardTableBody');
+//         leaderboardTableBody.innerHTML = '';
 
-        users.forEach((user, index) => {
-            const rowWrapper = document.createElement('div');
-            rowWrapper.className = 'row-wrapper';
+//         users.forEach((user, index) => {
+//             const rowWrapper = document.createElement('div');
+//             rowWrapper.className = 'row-wrapper';
             
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${user.name}</td>
-                <td>${user.goals}</td>
-                <td>${user.assists}</td>
-                <td>${user.strikeRate.toFixed(2)}</td>
-            `;
+//             const row = document.createElement('tr');
+//             row.innerHTML = `
+//                 <td><img src="${user.picture}" alt="${user.name}" width="50" height="50"></td>
+//                 <td>${user.name}</td>
+//                 <td>${user.goals}</td>
+//                 <td>${user.assists}</td>
+//                 <td>${user.strikeRate.toFixed(2)}</td>
+//             `;
 
-            rowWrapper.appendChild(row);
-            leaderboardTableBody.appendChild(rowWrapper);
-        });
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-    }
-}
+//             rowWrapper.appendChild(row);
+//             leaderboardTableBody.appendChild(rowWrapper);
+//         });
+//     } catch (error) {
+//         console.error('Error fetching user data:', error);
+//     }
+// }
 
-// Leagues Data
-async function fetchLeaguesData() {
-    try {
-        const response = await fetch('/api/leagues');
-        const leagues = await response.json();
+// // Leagues Data
+// async function fetchLeaguesData() {
+//     try {
+//         const response = await fetch('/api/leagues');
+//         const leagues = await response.json();
 
-        const LeaguesTableBody = document.getElementById('LeaguesTableBody');
-        LeaguesTableBody.innerHTML = '';
-        leagues.forEach((league, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${league.league_id}</td>
-                <td>${league.name}</td>
-                <td>${league.matches_played}</td>
-            `;
-            LeaguesTableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-    }
-}
+//         const LeaguesTableBody = document.getElementById('LeaguesTableBody');
+//         LeaguesTableBody.innerHTML = '';
+//         leagues.forEach((league, index) => {
+//             const row = document.createElement('tr');
+//             row.innerHTML = `
+//                 <td>${league.league_id}</td>
+//                 <td>${league.name}</td>
+//                 <td>${league.matches_played}</td>
+//             `;
+//             LeaguesTableBody.appendChild(row);
+//         });
+//     } catch (error) {
+//         console.error('Error fetching user data:', error);
+//     }
+// }
