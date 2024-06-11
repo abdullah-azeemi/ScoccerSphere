@@ -41,6 +41,7 @@ function closeSidebar() {
     }
 }
 
+<<<<<<< HEAD
 async function fetchUserDataSB() {
     try {
         const response = await fetch('http://localhost:5000/userSidebar');
@@ -80,6 +81,8 @@ async function fetchUserData() {
     }
 }
 
+=======
+>>>>>>> fad5391ddb63a3cc14984caa2b1416661d9dc991
 async function fetchLeaguesData() {
     try {
         const response = await fetch('http://localhost:5000/leagues');
